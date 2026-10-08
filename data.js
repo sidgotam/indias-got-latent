@@ -3,9 +3,9 @@
 // =========================================================================
 //
 // 📌 HOW TO ADD / UPDATE VIDEOS:
-// - Just paste your video link or Google Drive ID into VIDEO_STREAM_LINKS below!
-// - If you embed a link, that episode is AUTOMATICALLY ADDED & READY TO WATCH!
-// - If left empty (""), the episode will display as "Coming Soon".
+// - Episodes are managed through the internal storage layer (server/storageConfig.js).
+// - Storage references are mapped server-side for abstracted OTT video streaming.
+// - If left unmapped, the episode displays as "Coming Soon".
 //
 // =========================================================================
 
@@ -16,11 +16,12 @@ var VIDEO_STREAM_LINKS = {
     "s1-e01": "1bccMfHnHgSuegozF_5qp78vWwSVcwrIq", // Ep 1: Pilot Chaos (Tanmay Bhat & Nishant Suri)
     "s1-e02": "1EZ7-DvvGynEnxpBCHO93NmaD-Yesw1FU", // Ep 2: Roast & Latents (Kunal Kamra & Atul Khatri)
     "s1-e03": "1Fe1SkaCv7b2d2C4FWuS9gt18ygdIm3pu", // Ep 3: Neuroscience & Beats (Dr. Sidharth Warrier)
-    "s1-e04": "", // Episode 4: Paste link here to auto-add!
-    "s1-e05": "", // Episode 5: Paste link here to auto-add!
-    "s1-e06": "", // Episode 6: Paste link here to auto-add!
-    "s1-e07": "", // Episode 7: Paste link here to auto-add!
-    "s1-e08": "", // Episode 8: Paste link here to auto-add!
+    "s1-e04": "1gHvFlD5dBFc63NaMQQSudfm6PySmXpDs", // Episode 4: Paste link here to auto-add!
+    "s1-e05": "1xq7nmLIcp4Wnn17F8s1diDFdIrK1WA43",
+    
+  "s1-e06": "1rwaSaBCdyPE4zIwM5qbrE3YxiNQMU3vS", // Episode 6: Paste link here to auto-add!
+    "s1-e07": "19nq5G7BNghO36Kti6a5ZBunJ97LkCmTd", // Episode 7: Paste link here to auto-add!
+    "s1-e08": "1u6ad12iHKHmhR4jBSERc7fiLecGzNLP8", // Episode 8: Paste link here to auto-add!
     "s1-e09": "", // Episode 9: Paste link here to auto-add!
     "s1-e10": "", // Episode 10: Paste link here to auto-add!
     "s1-e11": "", // Episode 11: Paste link here to auto-add!
@@ -71,17 +72,8 @@ var DEFAULT_SERIES_INFO = {
     season2Banner: "assets/season_two_banner.webp",
     premiumBanner: "assets/premium_vault_banner.webp",
     developerQr: "assets/qr.jpg",
-    developerUpi: "siddharthakumar109-2@okhdfcbank",
-    driveFolderUrl: "https://drive.google.com/drive/folders/1AermIto6wOKAT_rHowr4629uE5g0gYsU",
-    driveFolderId: "1AermIto6wOKAT_rHowr4629uE5g0gYsU"
+    developerUpi: "siddharthakumar109-2@okhdfcbank"
 };
-
-var DRIVE_CONFIG = {
-    masterFolderUrl: "https://drive.google.com/drive/folders/1AermIto6wOKAT_rHowr4629uE5g0gYsU",
-    masterFolderId: "1AermIto6wOKAT_rHowr4629uE5g0gYsU",
-    uploadedEpisodeCount: 3
-};
-var SAMPLE_DRIVE_IDS = DRIVE_CONFIG;
 
 var DEFAULT_EPISODES = [
     // =========================================================================

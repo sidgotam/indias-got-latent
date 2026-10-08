@@ -11,9 +11,7 @@ import ToastContainer from './components/ToastContainer.jsx';
 
 import {
   DEFAULT_EPISODES,
-  DEFAULT_SERIES_INFO,
-  VIDEO_STREAM_LINKS,
-  extractGoogleDriveId
+  DEFAULT_SERIES_INFO
 } from './data/seriesData.js';
 
 const STORAGE_KEYS = {
@@ -22,27 +20,8 @@ const STORAGE_KEYS = {
 };
 
 export default function App() {
-  // 1. Episodes with embedded stream links
-  const [episodes] = useState(() => {
-    return DEFAULT_EPISODES.map((ep) => {
-      const quickLink = VIDEO_STREAM_LINKS[ep.id] || '';
-      const rawLink = quickLink || ep.link || ep.url || ep.driveId || '';
-      const cleanId = extractGoogleDriveId(rawLink);
-
-      const isReady = Boolean(
-        cleanId && 
-        cleanId !== '1AermIto6wOKAT_rHowr4629uE5g0gYsU' && 
-        !cleanId.includes('sample-drive-id')
-      );
-
-      return {
-        ...ep,
-        driveId: isReady ? cleanId : '',
-        link: isReady ? cleanId : '',
-        isStreamReady: isReady
-      };
-    });
-  });
+  // 1. Episode catalog managed through unified streaming layer
+  const [episodes] = useState(DEFAULT_EPISODES);
 
   // 2. Watched episodes Set
   const [watchedEpisodes, setWatchedEpisodes] = useState(() => {
@@ -219,7 +198,6 @@ export default function App() {
         setSearchQuery={setSearchQuery}
         onOpenSupport={handleOpenSupportDirect}
         watchedCount={watchedEpisodes.size}
-        masterDriveUrl={DEFAULT_SERIES_INFO.driveFolderUrl}
       />
 
       {/* Main Content */}
@@ -254,7 +232,7 @@ export default function App() {
           icon="fa-microphone-lines"
           glowClass="season1-glow"
           badge="12 Full Episodes • Uncut"
-          liveBadge="EPISODES 1-3 STREAM READY (1080P)"
+          liveBadge="EPISODES 1-8 STREAM READY (1080P)"
           counterText="12 Episodes • Uncut"
           episodes={s1Episodes}
           watchedEpisodes={watchedEpisodes}

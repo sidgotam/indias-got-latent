@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-export default function Navbar({ searchQuery, setSearchQuery, onOpenSupport, watchedCount, masterDriveUrl }) {
+export default function Navbar({ searchQuery, setSearchQuery, onOpenSupport, watchedCount }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -138,20 +138,7 @@ export default function Navbar({ searchQuery, setSearchQuery, onOpenSupport, wat
               <span>Support Dev</span>
             </button>
 
-            {/* Drive Folder Link */}
-            {masterDriveUrl && (
-              <a 
-                href={masterDriveUrl} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="btn-drive-folder-nav" 
-                id="navDriveFolderBtn"
-                title="Open Google Drive Master Folder"
-              >
-                <i className="fa-solid fa-folder-open"></i>
-                <span>Drive</span>
-              </a>
-            )}
+
 
             {/* Mobile Menu Hamburger Toggle */}
             <button
@@ -261,17 +248,6 @@ export default function Navbar({ searchQuery, setSearchQuery, onOpenSupport, wat
               <span>Support Dev (Buy a Chai)</span>
             </button>
 
-            {masterDriveUrl && (
-              <a 
-                href={masterDriveUrl} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="btn-drive-mobile"
-              >
-                <i className="fa-solid fa-folder-open"></i>
-                <span>Open Google Drive Folder</span>
-              </a>
-            )}
 
             <div className="mobile-drawer-stats">
               <span className="drawer-stat-pill">

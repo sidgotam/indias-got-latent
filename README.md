@@ -6,64 +6,48 @@ A comedy club-grade dark streaming web platform built for **India's Got Latent**
 
 ## 🌟 Key Features
 
-1. **Native OTT Player Experience**:
-   - Zero Google Drive branding or pop-out redirects visible to viewers.
-   - Top frame clipping shields internal storage file names and download options.
-   - Fullscreen mode, theater mode, episode drawer, auto-next playback, and watched progress tracking.
+1. **Native OTT Cinema Player**:
+   - Clean, professional streaming interface with zero external storage provider links or raw file URLs.
+   - Built-in cinema theater mode, native fullscreen API support, auto-play next episode, and watched progress tracking.
+   - Quick-switch episode drawer and responsive controls optimized for both desktop and mobile.
 
 2. **Episodes Loaded & Live**:
-   - **Season 1 • Episode 1**: The Pilot Chaos (Tanmay Bhat & Nishant Suri) • 1080p Live
-   - **Season 1 • Episode 2**: Roast & Latents (Kunal Kamra & Atul Khatri) • 1080p Live
-   - **Season 1 • Episode 3**: The Neuroscience of Latent (Dr. Sidharth Warrier) • 1080p Live
-   - **Episodes 4–12, Season 2 & VIP Specials**: Fully cataloged and ready for your video links!
+   - **Season 1 • Episodes 1 to 8**: Full uncut episodes stream-ready in 1080p HD.
+   - **Episodes 9–12, Season 2 & VIP Specials**: Cataloged and ready for stream deployment.
 
-3. **Super Simple Video Embedding**:
-   - To add or activate any episode, open `data.js` and paste your link/ID into `VIDEO_STREAM_LINKS`:
-   ```javascript
-   const VIDEO_STREAM_LINKS = {
-       "s1-e01": "1bccMfHnHgSuegozF_5qp78vWwSVcwrIq",
-       "s1-e02": "1EZ7-DvvGynEnxpBCHO93NmaD-Yesw1FU",
-       "s1-e03": "1Fe1SkaCv7b2d2C4FWuS9gt18ygdIm3pu",
-       "s1-e04": "https://drive.google.com/file/d/YOUR_ID/view", // <-- Paste here!
-   };
-   ```
-   - As soon as a link is added, it turns into **STREAM READY (1080p)** with a **Watch Video** button automatically!
+3. **Unified Storage Layer**:
+   - Videos are served through the application's abstracted storage layer (`/api/video/:episodeId`).
+   - The user-facing platform interacts with clean application endpoints (`/api/video/:id/embed` and `/api/video/:id`), completely decoupling video playback from underlying storage backends.
+   - Supports HTTP Range requests (`206 Partial Content`) for seeking and responsive buffering without preloading entire video files into memory.
 
-4. **Public Privacy (Manage Links Disabled)**:
-   - All management controls and storage links are removed from public visitors.
-   - Viewers only interact with the playback experience and support modal.
-
-5. **Developer Support / Buy Chai QR**:
+4. **Developer Support / Buy Chai QR**:
    - **Name**: Siddhartha Gautam
    - **UPI ID**: `siddharthakumar109-2@okhdfcbank`
-   - **QR Image**: `assets/qr.jpg` (embedded and responsive across mobile and desktop)
+   - **QR Image**: `assets/qr.jpg` (responsive across mobile and desktop)
    - Works with 1-tap redirect on mobile (Google Pay, PhonePe, Paytm, BHIM) and desktop clipboard copy.
 
 ---
 
-## 🚀 How to Publish the Website (Free 1-Click Hosting)
+## 💻 How to Run Locally
 
-Because this website is built with clean static HTML5, CSS3, and modern JavaScript, you can host it **100% for free** in less than 60 seconds:
+Double-click **`run.bat`** or run:
 
-### Option 1: Netlify Drop (Fastest - 30 seconds)
-1. Go to **[app.netlify.com/drop](https://app.netlify.com/drop)** in your browser.
-2. Drag and drop the **`IGL`** folder directly into the window.
-3. Your site is instantly live with a free SSL `https://...` link!
+```bash
+# 1. Start Vite development server
+npm run dev
 
-### Option 2: Vercel
-1. Install Vercel CLI via terminal: `npm i -g vercel` then run `vercel` in this folder.
-2. Or connect your GitHub repository to [Vercel](https://vercel.com) and click **Deploy**.
+# Or build and run with the Node streaming server
+npm run build
+npm run server
+```
 
-### Option 3: GitHub Pages
-1. Push this folder to a GitHub repository.
-2. In repository **Settings** ➜ **Pages**, choose the `main` branch ➜ **Save**.
-3. Your site is live at `https://<username>.github.io/<repo-name>/`.
+Then visit **`http://localhost:3000`**.
 
 ---
 
-## 💻 How to Run Locally
-Double-click **`run.bat`** or run:
-```powershell
-npm start
-```
-Then visit **`http://localhost:3000`**.
+## ⚙️ Architecture & Storage Configuration
+
+For developers and administrators:
+- Episode storage mappings are maintained server-side in `server/storageConfig.js`.
+- Sensitive storage IDs and provider credentials remain strictly server-side and are never bundled into the client build.
+- When deploying to serverless platforms (e.g. Vercel), route rewrites and API functions in `api/video.js` handle stream resolution seamlessly.

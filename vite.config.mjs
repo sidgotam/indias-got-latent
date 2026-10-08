@@ -1,9 +1,54 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+const { streamVideoChunk, getEmbedHtml } = require('./server/storageConfig.js');
+
+function videoApiPlugin() {
+  return {
+    name: 'video-api-middleware',
+    configureServer(server) {
+      server.middlewares.use((req, res, next) => {
+        const [rawPath, queryString] = req.url.split('?');
+        const reqPath = decodeURI(rawPath);
+
+        // Match /api/video/:id/embed
+        const embedMatch = reqPath.match(/^\/api\/video\/([a-zA-Z0-9_-]+)\/embed$/i);
+        if (embedMatch) {
+          const episodeId = embedMatch[1];
+          const html = getEmbedHtml(episodeId);
+          res.setHeader('Content-Type', 'text/html; charset=utf-8');
+          res.setHeader('Cache-Control', 'no-cache');
+          res.statusCode = 200;
+          return res.end(html);
+        }
+
+        // Match /api/video/:id
+        const videoMatch = reqPath.match(/^\/api\/video\/([a-zA-Z0-9_-]+)$/i);
+        if (videoMatch) {
+          const episodeId = videoMatch[1];
+          const searchParams = new URLSearchParams(queryString || '');
+          if (searchParams.get('format') === 'embed') {
+            const html = getEmbedHtml(episodeId);
+            res.setHeader('Content-Type', 'text/html; charset=utf-8');
+            res.setHeader('Cache-Control', 'no-cache');
+            res.statusCode = 200;
+            return res.end(html);
+          }
+
+          return streamVideoChunk(episodeId, req, res);
+        }
+
+        next();
+      });
+    }
+  };
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), videoApiPlugin()],
   server: {
     port: 3000,
     host: true,

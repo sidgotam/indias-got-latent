@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "rewrites": [
+    {
+      "source": "/api/video/:id/embed",
+      "destination": "/api/video?id=:id&format=embed"
+    },
+    {
+      "source": "/api/video/:id",
+      "destination": "/api/video?id=:id"
+    }
+  ]
+}

@@ -30,7 +30,7 @@ export default function Hero({ onWatchPilot, watchedCount, seriesInfo }) {
           {/* Curated Badges */}
           <div className="hero-badges" aria-label="Show Features">
             <span className="pill-badge series-type"><i className="fa-solid fa-fire"></i> SHOW EXCLUSIVE</span>
-            <span className="pill-badge ready-badge"><i className="fa-solid fa-bolt"></i> 3 EPISODES READY</span>
+            <span className="pill-badge ready-badge"><i className="fa-solid fa-bolt"></i> 8 EPISODES READY</span>
             <span className="pill-badge quality-badge"><i className="fa-solid fa-tv"></i> 4K FULL HD</span>
             <span className="pill-badge dolby-badge"><i className="fa-solid fa-microphone-lines"></i> HOST: SAMAY RAINA</span>
             <span className="pill-badge age-badge">18+ UNCENSORED</span>

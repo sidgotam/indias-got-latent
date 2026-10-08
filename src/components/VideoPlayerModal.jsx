@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { isEpisodeStreamReady, getDriveEmbedUrl } from '../data/seriesData.js';
+import { isEpisodeStreamReady, getVideoStreamUrl } from '../data/seriesData.js';
 
 export default function VideoPlayerModal({
   isOpen,
@@ -93,7 +93,7 @@ export default function VideoPlayerModal({
   if (!isOpen || !episode) return null;
 
   const isPlayable = isEpisodeStreamReady(episode);
-  const embedUrl = isPlayable ? getDriveEmbedUrl(episode.driveId) : '';
+  const embedUrl = isPlayable ? getVideoStreamUrl(episode.id) : '';
 
   const currentIndex = allEpisodes.findIndex((e) => e.id === episode.id);
   const hasPrev = currentIndex > 0;
@@ -244,12 +244,12 @@ export default function VideoPlayerModal({
             <div className="player-error-overlay" role="alert">
               <div className="player-error-card">
                 <i className="fa-solid fa-triangle-exclamation error-icon"></i>
-                <h4>Unable to load this video right now</h4>
+                <h4>Video is temporarily unavailable.</h4>
                 <p>Please check your connection or retry playback.</p>
                 <div className="player-error-actions">
                   <button type="button" className="btn-retry-stream" onClick={handleRetry}>
                     <i className="fa-solid fa-rotate-right"></i>
-                    <span>Try Again</span>
+                    <span>Retry</span>
                   </button>
                 </div>
               </div>
@@ -260,7 +260,8 @@ export default function VideoPlayerModal({
           {isPlayable ? (
             <iframe
               ref={iframeRef}
-              id="driveVideoIframe"
+              id="cinemaVideoPlayerFrame"
+              className="cinema-player-frame"
               src={embedUrl}
               title={episode.title}
               allow="autoplay; fullscreen; picture-in-picture"
@@ -276,7 +277,7 @@ export default function VideoPlayerModal({
                 </div>
                 <h3 id="unloadedTitle">{episode.title}</h3>
                 <p className="unloaded-desc">
-                  This episode is being processed for streaming. Season 1 Episodes 1, 2, and 3 are
+                  This episode is being processed for streaming. Season 1 Episodes 1 through 8 are
                   ready to watch right now!
                 </p>
 
