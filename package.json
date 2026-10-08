@@ -1,0 +1,28 @@
+{
+  "name": "igl-stream",
+  "version": "1.0.0",
+  "description": "India's Got Latent Stream Portal",
+  "main": "server.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "vite",
+    "server": "node server.js"
+  },
+  "keywords": [
+    "indias-got-latent",
+    "stream",
+    "samay-raina"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.1.2",
+    "vite": "^8.3.3"
+  }
+}

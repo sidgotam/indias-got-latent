@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INDIA'S GOT LATENT (IGL) - Full Episodes Season 1, Season 2 & VIP Uncut Vault</title>
+    <meta name="description" content="Watch India's Got Latent full episodes online hosted by Samay Raina with all-star celebrity judges. Stream Season 1, Season 2 and VIP Uncut Vault in HD with zero download risk.">
+    
+    <!-- Optimized Resource Hints -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="image" href="assets/hero_banner.webp" type="image/webp" fetchpriority="high">
+    
+    <!-- Google Fonts (Essential weights only with display=swap) -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;800;900&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons (Non-render-blocking with noscript fallback) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+    
+    <link rel="stylesheet" href="styles.css?v=4">
+</head>
+<body oncontextmenu="return false;" ondragstart="return false;">
+    <!-- Ambient Background Glows (India's Got Latent Studio Glow) -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div class="ambient-glow glow-3"></div>
+
+    <!-- Top Navigation Bar -->
+    <header class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="#home" class="brand-logo" id="brandLogo">
+                    <span class="logo-icon"><i class="fa-solid fa-microphone-lines"></i></span>
+                    <span class="logo-text">IGL<span class="logo-accent">LATENT</span></span>
+                    <span class="logo-badge">UNCENSORED</span>
+                </a>
+                <nav class="nav-links">
+                    <a href="#home" class="nav-link active"><i class="fa-solid fa-house"></i> Home</a>
+                    <a href="#season1Section" class="nav-link"><i class="fa-solid fa-microphone"></i> Season 1 (12)</a>
+                    <a href="#season2Section" class="nav-link"><i class="fa-solid fa-fire"></i> Season 2 (12)</a>
+                    <a href="#vipSection" class="nav-link vip-nav-link">
+                        <i class="fa-solid fa-crown"></i> VIP Vault <span class="badge-free">100% FREE</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div class="nav-right">
+                <!-- Search Bar -->
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="searchInput" placeholder="Search episodes, guests, latent tags..." autocomplete="off">
+                    <button class="clear-search-btn" id="clearSearchBtn" title="Clear search"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+
+                <!-- Support Developer Button (Chai Contribution) -->
+                <button class="btn-donate-nav" id="navSupportBtn" title="Support Developer / Buy a Chai">
+                    <i class="fa-solid fa-mug-hot"></i>
+                    <span>Support Dev</span>
+                </button>
+
+                
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-wrapper">
+        <!-- Hero Spotlight Section -->
+        <section class="hero-section" id="home">
+            <div class="hero-backdrop" id="heroBackdrop">
+                <img 
+                            src="assets/qr.jpg" 
+                            alt="Scan QR to Support Siddhartha Gautam" 
+                            id="developerQrImg" 
+                            class="developer-qr-img"
+                            width="210"
+                            height="290"
+                            loading="eager"
+                            decoding="async">
+                <div class="hero-gradient-overlay"></div>
+            </div>
+
+            <div class="hero-content">
+                <div class="hero-badges">
+                    <span class="pill-badge series-type"><i class="fa-solid fa-fire"></i> SHOW EXCLUSIVE</span>
+                    <span class="pill-badge ready-badge"><i class="fa-solid fa-bolt"></i> 3 EPISODES READY TO STREAM</span>
+                    <span class="pill-badge quality-badge"><i class="fa-solid fa-tv"></i> 4K FULL HD</span>
+                    <span class="pill-badge dolby-badge"><i class="fa-solid fa-microphone-lines"></i> HOST: SAMAY RAINA</span>
+                    <span class="pill-badge age-badge">18+ UNCENSORED</span>
+                    <span class="pill-badge buzzer-badge"><i class="fa-solid fa-bell"></i> RED BUZZER READY</span>
+                    <span class="pill-badge free-badge"><i class="fa-solid fa-crown"></i> VIP VAULT INCLUDED</span>
+                </div>
+
+                <h1 class="hero-title" id="seriesTitle">INDIA'S GOT LATENT</h1>
+                <p class="hero-tagline" id="seriesTagline">Rate Your Latent Talent • Complete Season 1, Season 2 & VIP Vault</p>
+
+                <div class="hero-meta">
+                    <span class="meta-item"><i class="fa-solid fa-star rating-star"></i> <strong>9.9</strong> / 10 Audience Score</span>
+                    <span class="meta-item"><i class="fa-solid fa-calendar-days"></i> 2024 - 2025</span>
+                    <span class="meta-item"><i class="fa-solid fa-layer-group"></i> 2 Seasons • 30 Uncut Episodes</span>
+                    <span class="meta-item"><i class="fa-solid fa-closed-captioning"></i> Ultra HD 4K</span>
+                </div>
+
+                <p class="hero-synopsis" id="seriesSynopsis">
+                    India's wildest comedy talent show where contestants put their bizarre and latent talents on the line in front of Samay Raina and an all-star comic panel! From outrageous mimicry and mind games to unexpected musical acts, contestants guess their own latent score from 1 to 10 to win cash prizes. Stream every episode with zero download risks, seamless horizontal navigation, and full unedited cuts.
+                </p>
+
+                <div class="hero-actions">
+                    <button class="btn-primary-play" id="heroPlayS1Btn">
+                        <i class="fa-solid fa-play"></i> Watch Episode 1: Pilot
+                    </button>
+                    <a href="#season1Section" class="btn-secondary-action">
+                        <i class="fa-solid fa-layer-group"></i> Browse Episodes
+                    </a>
+                    <a href="#season2Section" class="btn-secondary-action" id="heroPlayS2Btn">
+                        <i class="fa-solid fa-fire"></i> Season 2 Latents
+                    </a>
+                    <a href="#vipSection" class="btn-vip-action" id="heroVipBtn">
+                        <i class="fa-solid fa-crown"></i> 💎 VIP Uncut Vault (100% Free)
+                    </a>
+                </div>
+            </div>
+
+            <!-- Floating Stream Stat Card -->
+            <div class="hero-stat-card">
+                <div class="stat-item">
+                    <span class="stat-number">24</span>
+                    <span class="stat-label">Main Episodes</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number">06</span>
+                    <span class="stat-label">VIP Specials (Free)</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number" id="statsWatched">0</span>
+                    <span class="stat-label">Watched Episodes</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Studio Stream Status Bar -->
+        <section class="stream-studio-bar">
+            <div class="studio-bar-container">
+                <div class="studio-bar-left">
+                    <span class="studio-status-dot"></span>
+                    <span class="studio-brand">IGL LATENT ARENA</span>
+                    <span class="studio-separator">/</span>
+                    <span class="studio-status-text">Samay Raina's Uncut Direct Stream • Private Non-Download Network</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Search Results Section (Shown only when searching) -->
+        <section class="slider-section search-results-section hidden" id="searchSection">
+            <div class="section-row-header">
+                <div class="row-header-left">
+                    <h2 class="row-title">
+                        <span class="row-glow-bar"></span>
+                        Search Results for "<span id="searchResultQueryText"></span>"
+                    </h2>
+                    <p class="row-subtitle" id="searchResultCountText">Found matching episodes</p>
+                </div>
+                <div class="row-header-right">
+                    <button class="btn-text-reset" id="resetSearchBtn"><i class="fa-solid fa-rotate-left"></i> Clear Search</button>
+                    <div class="slider-nav-btns">
+                        <button class="slider-btn-prev" data-target="searchTrack" aria-label="Slide Left"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button class="slider-btn-next" data-target="searchTrack" aria-label="Slide Right"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="slider-viewport">
+                <button class="floating-nav-arrow float-arrow-left" data-target="searchTrack" aria-label="Slide Left"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="horizontal-slider-track" id="searchTrack">
+                    <!-- Dynamic Search Cards -->
+                </div>
+                <button class="floating-nav-arrow float-arrow-right" data-target="searchTrack" aria-label="Slide Right"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- HORIZONTAL SLIDABLE ROWS                                 -->
+        <!-- ======================================================== -->
+
+        <!-- ROW 1: SEASON 1 SLIDER -->
+        <section class="slider-section" id="season1Section">
+            <div class="section-row-header">
+                <div class="row-header-left">
+                    <h2 class="row-title">
+                        <span class="row-glow-bar season1-glow"></span>
+                        <i class="fa-solid fa-microphone-lines title-icon"></i> Season 1: The OG Panel & Auditions
+                    </h2>
+                    <span class="row-badge">12 Full Episodes • Uncut</span>
+                    <span class="row-badge row-badge-live"><i class="fa-solid fa-circle"></i> EPISODES 1-3 STREAM READY (1080P)</span>
+                    <p class="row-subtitle">Tanmay Bhat, Kunal Kamra, Raghu Ram, Seedhe Maut & iconic pilot moments</p>
+                </div>
+                <div class="row-header-right">
+                    <span class="slider-counter" id="s1SliderCounter">Slide to explore</span>
+                    <div class="slider-nav-btns">
+                        <button class="slider-btn-prev" data-target="season1Track" aria-label="Slide Left" title="Previous Episodes">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+                        <button class="slider-btn-next" data-target="season1Track" aria-label="Slide Right" title="Next Episodes">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slider-viewport">
+                <button class="floating-nav-arrow float-arrow-left" data-target="season1Track" aria-label="Previous Episodes">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <div class="horizontal-slider-track" id="season1Track">
+                    <!-- Season 1 Episodes injected via JS -->
+                </div>
+                <button class="floating-nav-arrow float-arrow-right" data-target="season1Track" aria-label="Next Episodes">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- ROW 2: SEASON 2 SLIDER -->
+        <section class="slider-section" id="season2Section">
+            <div class="section-row-header">
+                <div class="row-header-left">
+                    <h2 class="row-title">
+                        <span class="row-glow-bar season2-glow"></span>
+                        <i class="fa-solid fa-fire title-icon s2-icon"></i> Season 2: Unhinged Chaos & New Latents
+                    </h2>
+                    <span class="row-badge s2-badge">12 Blockbuster Episodes • 4K HDR</span>
+                    <p class="row-subtitle">Higher stakes, merciless red buzzers, and the legendary 10/10 scoring syncs</p>
+                </div>
+                <div class="row-header-right">
+                    <span class="slider-counter" id="s2SliderCounter">Slide to explore</span>
+                    <div class="slider-nav-btns">
+                        <button class="slider-btn-prev" data-target="season2Track" aria-label="Slide Left" title="Previous Episodes">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+                        <button class="slider-btn-next" data-target="season2Track" aria-label="Slide Right" title="Next Episodes">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slider-viewport">
+                <button class="floating-nav-arrow float-arrow-left" data-target="season2Track" aria-label="Previous Episodes">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <div class="horizontal-slider-track" id="season2Track">
+                    <!-- Season 2 Episodes injected via JS -->
+                </div>
+                <button class="floating-nav-arrow float-arrow-right" data-target="season2Track" aria-label="Next Episodes">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- ROW 3: VIP PREMIUM VAULT SLIDER (100% FREE ACCESS) -->
+        <section class="slider-section vip-slider-section" id="vipSection">
+            <div class="section-row-header vip-row-header">
+                <div class="row-header-left">
+                    <div class="vip-header-badge-row">
+                        <span class="highlight-badge"><i class="fa-solid fa-gem"></i> VIP EXCLUSIVE</span>
+                        <span class="badge-free"><i class="fa-solid fa-gift"></i> 100% FREE ACCESS</span>
+                    </div>
+                    <h2 class="row-title vip-title">
+                        <span class="row-glow-bar vip-glow"></span>
+                        <i class="fa-solid fa-crown title-icon vip-icon-gold"></i> VIP Latent Vault: Uncut & Backstage Specials
+                    </h2>
+                    <p class="row-subtitle vip-subtitle">Green room roasts, bizarre rejected audition tapes, red buzzer compilations & Raghu Ram deliberations — completely free with zero subscription charges!</p>
+                </div>
+                <div class="row-header-right">
+                    <span class="slider-counter vip-counter" id="vipSliderCounter">6 Free Specials</span>
+                    <div class="slider-nav-btns">
+                        <button class="slider-btn-prev vip-btn-nav" data-target="vipTrack" aria-label="Slide Left" title="Previous Specials">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+                        <button class="slider-btn-next vip-btn-nav" data-target="vipTrack" aria-label="Slide Right" title="Next Specials">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slider-viewport vip-viewport">
+                <button class="floating-nav-arrow float-arrow-left vip-float-arrow" data-target="vipTrack" aria-label="Previous Specials">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <div class="horizontal-slider-track vip-track" id="vipTrack">
+                    <!-- VIP Specials injected via JS -->
+                </div>
+                <button class="floating-nav-arrow float-arrow-right vip-float-arrow" data-target="vipTrack" aria-label="Next Specials">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <div class="brand-logo">
+                        <span class="logo-icon"><i class="fa-solid fa-microphone-lines"></i></span>
+                        <span class="logo-text">IGL<span class="logo-accent">LATENT</span></span>
+                    </div>
+                    <p class="footer-desc">
+                        The ultimate horizontal streaming platform for India's Got Latent Season 1, Season 2, and free VIP Vault specials. Built with anti-download protection for Google Drive video streams.
+                    </p>
+                </div>
+
+                <div class="footer-nav-col">
+                    <h4>Series Navigation</h4>
+                    <ul>
+                        <li><a href="#season1Section" class="footer-link"><i class="fa-solid fa-microphone"></i> Season 1 (Episodes 1-12)</a></li>
+                        <li><a href="#season2Section" class="footer-link"><i class="fa-solid fa-fire"></i> Season 2 (Episodes 1-12)</a></li>
+                        <li><a href="#vipSection" class="footer-link"><i class="fa-solid fa-crown"></i> 💎 VIP Uncut Vault (Free)</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-nav-col">
+                    <h4>Streaming & Settings</h4>
+                    <ul>
+                        <li><a href="#season1Section" class="footer-link"><i class="fa-solid fa-play"></i> High-Speed Web Playback</a></li>
+                        <li><a href="#" id="footerSupportLink"><i class="fa-solid fa-mug-hot"></i> Support the Developer (Buy a Chai)</a></li>
+                        
+                        <li><a href="#" id="footerResetLink"><i class="fa-solid fa-clock-rotate-left"></i> Reset Episode Cache</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 INDIA'S GOT LATENT STREAM. All rights reserved. Ultra HD Cinema Streaming Platform.</p>
+                <div class="footer-security-badges">
+                    <span class="badge-item"><i class="fa-solid fa-shield-check"></i> Right-Click Protected</span>
+                    <span class="badge-item"><i class="fa-solid fa-ban"></i> No Downloads Allowed</span>
+                    <span class="badge-item"><i class="fa-solid fa-gem"></i> 100% Free Streaming</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+        <!-- ======================================================== -->
+    <!-- DEVELOPER CONTRIBUTION / BUY ME A CHAI QR MODAL          -->
+    <!-- (Shown before playing any video)                         -->
+    <!-- ======================================================== -->
+    <div class="donate-modal" id="donateModal" aria-hidden="true" role="dialog">
+        <div class="modal-backdrop" id="donateBackdrop"></div>
+        <div class="donate-dialog">
+            <button class="btn-close-donate" id="closeDonateBtn" title="Close & Watch">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="donate-header">
+                <div class="donate-icon-badge">
+                    <i class="fa-solid fa-mug-hot"></i>
+                </div>
+                <div class="donate-badge-pill">
+                    <i class="fa-solid fa-heart"></i> <span>SUPPORT THE DEVELOPER</span>
+                </div>
+                <h3 class="donate-title">Enjoying India's Got Latent?</h3>
+                <p class="donate-subtitle">
+                    100% ad-free & uncensored stream! If you appreciate the platform, consider buying a chai to help keep the stream fast and alive. 💖
+                </p>
+            </div>
+
+            <div class="donate-body">
+                <!-- Left Column: QR Code Display Card -->
+                <div class="donate-qr-card">
+                    <div class="qr-glow-wrapper">
+                        <!-- Lightweight WebP QR code with PNG fallback -->
+                        <picture>
+                            <source srcset="assets/developer_qr.webp" type="image/webp">
+                            <img 
+                                src="assets/developer_qr.png" 
+                                alt="Scan QR to Support Developer" 
+                                id="developerQrImg" 
+                                class="developer-qr-img"
+                                width="200"
+                                height="200"
+                                loading="lazy"
+                                decoding="async">
+                        </picture>
+                    </div>
+                    <div class="qr-scan-label">
+                        <i class="fa-solid fa-qrcode"></i> Scan with any UPI App
+                    </div>
+                    <span class="qr-scan-sublabel">Instant auto-verification</span>
+                </div>
+
+                <!-- Right Column: Payment Details & Direct Redirect -->
+                <div class="donate-details-card">
+                    <!-- Step 1: Select Tier -->
+                    <div class="detail-section">
+                        <span class="detail-section-label">
+                            <i class="fa-solid fa-mug-hot"></i> Choose Contribution Amount
+                        </span>
+                        <div class="chai-tier-grid">
+                            <button class="chai-tier-btn active" data-amount="20">
+                                <span class="tier-icon">☕</span>
+                                <span class="tier-val">₹20</span>
+                                <span class="tier-name">Chai</span>
+                            </button>
+                            <button class="chai-tier-btn" data-amount="50">
+                                <span class="tier-icon">🧋</span>
+                                <span class="tier-val">₹50</span>
+                                <span class="tier-name">Coffee</span>
+                            </button>
+                            <button class="chai-tier-btn" data-amount="100">
+                                <span class="tier-icon">🍕</span>
+                                <span class="tier-val">₹100</span>
+                                <span class="tier-name">Snacks</span>
+                            </button>
+                            <button class="chai-tier-btn" data-amount="custom">
+                                <span class="tier-icon">❤️</span>
+                                <span class="tier-val">Custom</span>
+                                <span class="tier-name">Any Amt</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Instant 1-Tap UPI Pay Button -->
+                    <div class="detail-section">
+                        <a href="upi://pay?pa=siddharthakumar109-2@okhdfcbank&pn=Siddhartha%20Gautam&cu=INR&am=20" class="btn-pay-intent" id="payViaUpiAppBtn" title="Launch Installed UPI App">
+                            <span class="pay-intent-icon"><i class="fa-solid fa-bolt"></i></span>
+                            <span class="pay-intent-text">Pay <strong id="payTierAmountDisplay">₹20</strong> via UPI App</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square arrow-icon"></i>
+                        </a>
+
+                        <div class="upi-apps-row">
+                            <span class="upi-apps-label">Or open directly:</span>
+                            <a href="upi://pay?pa=siddharthakumar109-2@okhdfcbank&pn=Siddhartha%20Gautam&cu=INR&am=20" class="upi-app-pill upi-intent-link" data-app="gpay" title="Open Google Pay"><i class="fa-brands fa-google-pay"></i> GPay</a>
+                            <a href="upi://pay?pa=siddharthakumar109-2@okhdfcbank&pn=Siddhartha%20Gautam&cu=INR&am=20" class="upi-app-pill upi-intent-link" data-app="phonepe" title="Open PhonePe"><i class="fa-solid fa-bolt"></i> PhonePe</a>
+                            <a href="upi://pay?pa=siddharthakumar109-2@okhdfcbank&pn=Siddhartha%20Gautam&cu=INR&am=20" class="upi-app-pill upi-intent-link" data-app="paytm" title="Open Paytm"><i class="fa-solid fa-wallet"></i> Paytm</a>
+                            <a href="upi://pay?pa=siddharthakumar109-2@okhdfcbank&pn=Siddhartha%20Gautam&cu=INR&am=20" class="upi-app-pill upi-intent-link" data-app="bhim" title="Open BHIM"><i class="fa-solid fa-building-columns"></i> BHIM</a>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Desktop Manual UPI Copy -->
+                    <div class="upi-box">
+                        <div class="upi-label-row">
+                            <span class="upi-label">UPI ID: Siddhartha Gautam</span>
+                        </div>
+                        <div class="upi-row">
+                            <code class="upi-text" id="upiIdText">siddharthakumar109-2@okhdfcbank</code>
+                            <button class="btn-copy-upi" id="copyUpiBtn" title="Copy UPI ID">
+                                <i class="fa-regular fa-copy"></i> <span id="copyBtnText">Copy</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Target Preview -->
+                    <div class="qr-target-preview">
+                        <i class="fa-solid fa-circle-play"></i>
+                        <div class="qr-target-text">
+                            <span class="target-head">Next Up:</span>
+                            <strong id="donateEpisodeTitle" class="target-title">Episode Title</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="donate-footer">
+                <button class="btn-contributed-action" id="donateContributedBtn">
+                    <i class="fa-solid fa-heart"></i> I Have Contributed!
+                </button>
+                <button class="btn-continue-play" id="donateContinueBtn">
+                    <span>Continue to Video</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- CINEMA VIDEO PLAYER MODAL (Anti-Download Protected)       -->
+    <!-- ======================================================== -->
+    <div class="player-modal" id="playerModal" aria-hidden="true" role="dialog">
+        <div class="player-modal-backdrop" id="playerBackdrop"></div>
+        
+        <div class="player-container">
+            <!-- Cinema Player Header -->
+            <div class="player-header">
+                <div class="player-header-info">
+                    <span class="player-tag" id="playerEpisodeTag">S1 • E01</span>
+                    <h3 class="player-title" id="playerEpisodeTitle">Episode Title</h3>
+                    <span class="badge-protected"><i class="fa-solid fa-shield-halved"></i> Ultra HD 1080p • Protected Stream</span>
+                </div>
+                <div class="player-header-actions">
+                    <button class="player-ctrl-btn btn-fullscreen-player" id="fullscreenPlayerBtn" title="Fullscreen">
+                        <i class="fa-solid fa-up-right-and-down-left-and-up-left-to-down-right"></i>
+                    </button>
+                    <button class="player-ctrl-btn" id="toggleTheaterBtn" title="Theater Mode">
+                        <i class="fa-solid fa-expand"></i>
+                    </button>
+                    <button class="player-ctrl-btn btn-close-player" id="closePlayerBtn" title="Close (Esc)">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Video Wrapper with Top Shielding Mask -->
+            <div class="video-frame-wrapper" id="videoWrapper">
+                <!-- TOP SHIELD OVERLAY: Intercepts clicks on Google Drive's pop-out & download buttons -->
+                <div class="anti-download-shield" id="antiDownloadShield">
+                    <div class="shield-watermark">
+                        <i class="fa-solid fa-shield-halved"></i> INDIA'S GOT LATENT • PROTECTED STREAM • NO DOWNLOAD
+                    </div>
+                </div>
+
+                <!-- Google Drive Preview Iframe -->
+                <iframe 
+                    id="driveVideoIframe"
+                    src="about:blank"
+                    title="Protected Video Stream"
+                    allow="autoplay; fullscreen"
+                    allowfullscreen>
+                </iframe>
+
+                <!-- Video Stream Error / Retry Overlay -->
+                <div class="video-error-overlay hidden" id="videoErrorOverlay">
+                    <div class="video-error-card">
+                        <i class="fa-solid fa-triangle-exclamation error-icon"></i>
+                        <h4>Video Stream Temporarily Unavailable</h4>
+                        <p id="videoErrorMessage">The stream could not be loaded or your network timed out. Please click below to reload the player.</p>
+                        <div class="video-error-actions">
+                            <button class="btn-retry-video" id="retryVideoBtn">
+                                <i class="fa-solid fa-rotate-right"></i> Try Again
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Episode Coming Soon Overlay -->
+                <div class="unloaded-notice-overlay hidden" id="unloadedNoticeOverlay">
+                    <div class="unloaded-card">
+                        <div class="unloaded-pill"><i class="fa-solid fa-clock"></i> COMING SOON</div>
+                        <h3 id="unloadedTitle">Episode Coming Soon</h3>
+                        <p class="unloaded-desc">This unedited episode is currently being processed for streaming. However, <strong>Season 1 Episodes 1, 2, and 3</strong> are fully uploaded and ready to watch right now!</p>
+                        
+                        <div class="unloaded-quick-watch">
+                            <span class="quick-watch-label">Stream Available Episodes Now:</span>
+                            <div class="quick-watch-buttons">
+                                <button type="button" class="btn-quick-stream" data-stream-id="s1-e01">
+                                    <i class="fa-solid fa-circle-play"></i> Ep 1: Pilot Chaos (1080p)
+                                </button>
+                                <button type="button" class="btn-quick-stream" data-stream-id="s1-e02">
+                                    <i class="fa-solid fa-circle-play"></i> Ep 2: Roast & Latents (1080p)
+                                </button>
+                                <button type="button" class="btn-quick-stream" data-stream-id="s1-e03">
+                                    <i class="fa-solid fa-circle-play"></i> Ep 3: Neuroscience (1080p)
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="unloaded-actions">
+                            <button type="button" class="btn-quick-stream" id="unloadedBackBtn" style="background: rgba(255,255,255,0.1); border-color: var(--border-subtle); cursor: pointer;">
+                                <i class="fa-solid fa-xmark"></i> Back to Episode Guide
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Demo notice banner if URL is sample -->
+                <div class="sample-notice-banner hidden" id="sampleNoticeBanner">
+                    <div class="sample-notice-inner">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span>This episode is currently using a sample link. To connect your real Google Drive video, click <strong>"Manage Drive Links"</strong> in the top menu.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Footer Controls & Next Episode Drawer -->
+            <div class="player-footer">
+                <div class="player-footer-left">
+                    <button class="btn-player-nav" id="prevEpisodeBtn">
+                        <i class="fa-solid fa-backward-step"></i> Previous Episode
+                    </button>
+                    <button class="btn-player-nav" id="nextEpisodeBtn">
+                        Next Episode <i class="fa-solid fa-forward-step"></i>
+                    </button>
+                    <label class="auto-play-toggle">
+                        <input type="checkbox" id="autoNextCheck" checked>
+                        <span>Auto-play Next Episode</span>
+                    </label>
+                </div>
+
+                <div class="player-footer-right">
+                    <button class="btn-player-action" id="markWatchedBtn">
+                        <i class="fa-regular fa-circle-check"></i> <span id="markWatchedText">Mark as Watched</span>
+                    </button>
+                    <button class="btn-player-action" id="toggleEpisodeListBtn">
+                        <i class="fa-solid fa-list-ul"></i> Episode Selector
+                    </button>
+                </div>
+            </div>
+
+            <!-- In-Player Episode Quick Switch Drawer -->
+            <div class="player-episode-drawer hidden" id="playerEpisodeDrawer">
+                <div class="drawer-header">
+                    <h4><i class="fa-solid fa-microphone-lines"></i> Quick Episode Switch</h4>
+                    <button class="btn-close-drawer" id="closeDrawerBtn"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="drawer-episode-list" id="drawerEpisodeList">
+                    <!-- Dynamic Drawer Cards -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    
+                    <div class="master-drive-input-row">
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-folder-tree"></i>
+                            <input type="text" id="masterDriveFolderInput" value="https://drive.google.com/drive/folders/1AermIto6wOKAT_rHowr4629uE5g0gYsU" placeholder="Storage folder URL or ID...">
+                        </div>
+                        <button type="button" class="btn-apply-folder" id="applyFolderToAllBtn" title="Apply this storage ID to all episodes">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Link to All Episodes
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Instructions Bar -->
+                <div class="admin-info-box">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    <div>
+                        <strong>Video Source Setup:</strong> Enter individual file IDs or links. Storage backend remains completely invisible to viewers and plays directly inside the website.
+                    </div>
+                </div>
+
+                <!-- Season Selection Tabs inside Admin -->
+                <div class="admin-season-tabs">
+                    <button class="admin-tab active" data-admin-season="1" id="adminTabS1">Season 1 (12 Episodes)</button>
+                    <button class="admin-tab" data-admin-season="2" id="adminTabS2">Season 2 (12 Episodes)</button>
+                    <button class="admin-tab" data-admin-season="VIP" id="adminTabVIP">💎 VIP Vault (6 Specials)</button>
+                </div>
+
+                <!-- Quick Batch Search / Filter -->
+                <div class="admin-search-bar">
+                    <input type="text" id="adminFilterInput" placeholder="Filter by episode title or number...">
+                </div>
+
+                <!-- Episode Edit List -->
+                <div class="admin-episodes-container" id="adminEpisodesList">
+                    <!-- Form items rendered via JavaScript -->
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <div class="modal-footer-left">
+                    <button class="btn-danger-outline" id="resetDataBtn" title="Restore default sample episode data">
+                        <i class="fa-solid fa-rotate-left"></i> Reset Defaults
+                    </button>
+                    <button class="btn-secondary-outline" id="exportDataBtn" title="Export episodes to JSON file">
+                        <i class="fa-solid fa-file-export"></i> Backup JSON
+                    </button>
+                </div>
+                <div class="modal-footer-right">
+                    <button class="btn-secondary-action" id="cancelAdminBtn">Cancel</button>
+                    <button class="btn-primary-play" id="saveAllLinksBtn">
+                        <i class="fa-solid fa-floppy-disk"></i> Save All Links
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Scripts (deferred for non-render-blocking execution) -->
+    <script src="data.js?v=9" defer></script>
+    <script src="app.js?v=9" defer></script>
+</body>
+</html>
