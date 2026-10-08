@@ -54,7 +54,7 @@ export default function Hero({ onWatchPilot, watchedCount, seriesInfo }) {
           </div>
 
           <p className="hero-synopsis" id="seriesSynopsis">
-            {seriesInfo?.synopsis || "India's wildest comedy talent show where contestants put their bizarre latent talents on the line in front of Samay Raina and an all-star comic panel! Stream every episode with zero download risks, seamless horizontal navigation, and full unedited cuts."}
+            {seriesInfo?.synopsis || "India's wildest comedy talent show where contestants put their bizarre latent talents on the line in front of Samay Raina and an all-star comic panel! Stream every episode with fast cinema playback, seamless horizontal navigation, and full unedited cuts."}
           </p>
 
           <div className="hero-actions" aria-label="Quick Actions">

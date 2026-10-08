@@ -38,7 +38,7 @@ export default function SupportDevModal({
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(UPI_ID).then(() => {
         setCopied(true);
-        showToast('UPI ID copied to clipboard! (siddharthakumar109-2@okhdfcbank)', 'success');
+        if (showToast) showToast('UPI ID copied to clipboard!', 'success');
         setTimeout(() => setCopied(false), 2500);
       }).catch(() => {
         setCopied(true);
@@ -55,7 +55,7 @@ export default function SupportDevModal({
       navigator.clipboard.writeText(UPI_ID).catch(() => {});
     }
     const amtLabel = selectedAmount !== 'custom' ? `for ₹${selectedAmount}` : '';
-    showToast(`🚀 Opening UPI Payment App ${amtLabel}... (UPI ID copied)`, 'info');
+    if (showToast) showToast(`🚀 Opening UPI App ${amtLabel}...`, 'info');
   };
 
   const formatTargetTitle = () => {
@@ -82,6 +82,7 @@ export default function SupportDevModal({
           <i className="fa-solid fa-xmark"></i>
         </button>
 
+        {/* Modal Header */}
         <div className="donate-header">
           <div className="donate-icon-badge">
             <i className="fa-solid fa-mug-hot"></i>
@@ -91,12 +92,29 @@ export default function SupportDevModal({
           </div>
           <h3 className="donate-title" id="donateTitle">Enjoying India's Got Latent?</h3>
           <p className="donate-subtitle">
-            100% ad-free & uncensored stream! If you appreciate the platform, consider buying a chai to help keep the stream fast and alive. 💖
+            100% ad-free & uncensored stream! If you'd like to support the hosting and maintenance, consider buying a chai.
           </p>
+
+          {/* Primary Action Banner: Immediately Visible & Usable */}
+          <div className="donate-primary-action-wrap">
+            <button 
+              type="button" 
+              className="btn-continue-video-primary" 
+              id="donateImmediateContinueBtn"
+              onClick={onProceedToVideo}
+              aria-label="Continue to Video immediately"
+            >
+              <i className="fa-solid fa-circle-play"></i>
+              <span>Continue to Video</span>
+              <i className="fa-solid fa-arrow-right"></i>
+            </button>
+            <span className="donate-skip-hint">Zero payment required • Free instant stream</span>
+          </div>
         </div>
 
+        {/* Modal Body: QR & Optional Contribution Details */}
         <div className="donate-body">
-          {/* Left Column: QR Code Display Card */}
+          {/* Column 1: QR Code Card */}
           <div className="donate-qr-card">
             <div className="qr-glow-wrapper">
               <picture>
@@ -107,8 +125,8 @@ export default function SupportDevModal({
                   alt="Scan QR to Support Siddhartha Gautam" 
                   id="developerQrImg" 
                   className="developer-qr-img"
-                  width="210"
-                  height="280"
+                  width="180"
+                  height="220"
                   loading="eager"
                   onError={(e) => {
                     if (!e.target.dataset.tried) {
@@ -122,21 +140,22 @@ export default function SupportDevModal({
             <div className="qr-scan-label">
               <i className="fa-solid fa-qrcode"></i> Scan with any UPI App
             </div>
-            <span className="qr-scan-sublabel">Instant auto-verification</span>
+            <span className="qr-scan-sublabel">Optional contribution</span>
           </div>
 
-          {/* Right Column: Payment Details & Direct Redirect */}
+          {/* Column 2: Contribution Options & 1-Tap Pay */}
           <div className="donate-details-card">
             {/* Step 1: Select Contribution Tier */}
             <div className="detail-section">
               <span className="detail-section-label">
-                <i className="fa-solid fa-mug-hot"></i> Choose Contribution Amount
+                <i className="fa-solid fa-mug-hot"></i> Choose Contribution (Optional)
               </span>
               <div className="chai-tier-grid" role="group" aria-label="Contribution Amount">
                 <button 
                   type="button"
                   className={`chai-tier-btn ${selectedAmount === '20' ? 'active' : ''}`}
                   onClick={() => setSelectedAmount('20')}
+                  aria-label="Select ₹20 Chai"
                 >
                   <span className="tier-icon">☕</span>
                   <span className="tier-val">₹20</span>
@@ -146,6 +165,7 @@ export default function SupportDevModal({
                   type="button"
                   className={`chai-tier-btn ${selectedAmount === '50' ? 'active' : ''}`}
                   onClick={() => setSelectedAmount('50')}
+                  aria-label="Select ₹50 Coffee"
                 >
                   <span className="tier-icon">🧋</span>
                   <span className="tier-val">₹50</span>
@@ -155,6 +175,7 @@ export default function SupportDevModal({
                   type="button"
                   className={`chai-tier-btn ${selectedAmount === '100' ? 'active' : ''}`}
                   onClick={() => setSelectedAmount('100')}
+                  aria-label="Select ₹100 Snacks"
                 >
                   <span className="tier-icon">🍕</span>
                   <span className="tier-val">₹100</span>
@@ -164,6 +185,7 @@ export default function SupportDevModal({
                   type="button"
                   className={`chai-tier-btn ${selectedAmount === 'custom' ? 'active' : ''}`}
                   onClick={() => setSelectedAmount('custom')}
+                  aria-label="Select Custom Amount"
                 >
                   <span className="tier-icon">❤️</span>
                   <span className="tier-val">Custom</span>
@@ -172,7 +194,7 @@ export default function SupportDevModal({
               </div>
             </div>
 
-            {/* Step 2: Instant 1-Tap UPI Pay Button */}
+            {/* Step 2: 1-Tap UPI Pay Link */}
             <div className="detail-section">
               <a 
                 href={currentUpiUrl} 
@@ -194,7 +216,6 @@ export default function SupportDevModal({
                   <a 
                     href={currentUpiUrl} 
                     className="upi-app-pill upi-intent-link" 
-                    data-app="gpay" 
                     title="Open Google Pay"
                     onClick={handleIntentClick}
                   >
@@ -203,7 +224,6 @@ export default function SupportDevModal({
                   <a 
                     href={currentUpiUrl} 
                     className="upi-app-pill upi-intent-link" 
-                    data-app="phonepe" 
                     title="Open PhonePe"
                     onClick={handleIntentClick}
                   >
@@ -212,7 +232,6 @@ export default function SupportDevModal({
                   <a 
                     href={currentUpiUrl} 
                     className="upi-app-pill upi-intent-link" 
-                    data-app="paytm" 
                     title="Open Paytm"
                     onClick={handleIntentClick}
                   >
@@ -221,7 +240,6 @@ export default function SupportDevModal({
                   <a 
                     href={currentUpiUrl} 
                     className="upi-app-pill upi-intent-link" 
-                    data-app="bhim" 
                     title="Open BHIM"
                     onClick={handleIntentClick}
                   >
@@ -231,25 +249,19 @@ export default function SupportDevModal({
               </div>
             </div>
 
-            {/* Step 3: Desktop Manual UPI Copy */}
-            <div className="upi-box">
-              <div className="upi-label-row">
-                <span className="upi-label">UPI ID: Siddhartha Gautam</span>
-              </div>
-              <div className="upi-row">
-                <code className="upi-text" id="upiIdText">{UPI_ID}</code>
-                <button 
-                  type="button"
-                  className={`btn-copy-upi ${copied ? 'copied' : ''}`} 
-                  id="copyUpiBtn" 
-                  title="Copy UPI ID"
-                  aria-label="Copy UPI ID to clipboard"
-                  onClick={handleCopyUpi}
-                >
-                  <i className={copied ? "fa-solid fa-check" : "fa-regular fa-copy"}></i> 
-                  <span id="copyBtnText">{copied ? 'Copied!' : 'Copy'}</span>
-                </button>
-              </div>
+            {/* Step 3: Copy UPI ID Button */}
+            <div className="upi-copy-action-row">
+              <button 
+                type="button"
+                className={`btn-copy-upi-inline ${copied ? 'copied' : ''}`} 
+                id="copyUpiBtn" 
+                title="Copy UPI ID"
+                aria-label="Copy UPI ID to clipboard"
+                onClick={handleCopyUpi}
+              >
+                <i className={copied ? "fa-solid fa-check" : "fa-regular fa-copy"}></i> 
+                <span>{copied ? 'UPI ID Copied!' : 'Copy UPI ID'}</span>
+              </button>
             </div>
 
             {/* Target Episode Preview */}
@@ -265,6 +277,7 @@ export default function SupportDevModal({
           </div>
         </div>
 
+        {/* Modal Footer with Actions */}
         <div className="donate-footer">
           <button 
             type="button" 

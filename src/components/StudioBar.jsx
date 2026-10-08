@@ -9,7 +9,7 @@ export default function StudioBar() {
           <span className="studio-brand">IGL LATENT ARENA</span>
           <span className="studio-separator" aria-hidden="true">/</span>
           <span className="studio-status-text">
-            Samay Raina's Uncut Direct Stream • Non-Download Network
+            Samay Raina's Uncut Direct Stream • High-Speed Web Portal
           </span>
         </div>
         <div className="studio-bar-right">

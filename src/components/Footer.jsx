@@ -20,7 +20,7 @@ export default function Footer({ onOpenSupport, onResetCache }) {
               <span className="logo-badge">UNCENSORED</span>
             </div>
             <p className="footer-desc">
-              The premium cinema streaming portal for India's Got Latent Season 1, Season 2, and free VIP Vault specials. Ultra-fast direct streaming with zero download risks and unedited cuts.
+              The premium cinema streaming portal for India's Got Latent Season 1, Season 2, and free VIP Vault specials. Ultra-fast direct streaming with high definition and unedited cuts.
             </p>
           </div>
 
@@ -82,8 +82,8 @@ export default function Footer({ onOpenSupport, onResetCache }) {
             © 2026 INDIA'S GOT LATENT STREAM. All rights reserved. Ultra HD Cinema Streaming Platform.
           </p>
           <div className="footer-security-badges">
-            <span className="badge-item"><i className="fa-solid fa-shield-halved"></i> Protected Stream</span>
-            <span className="badge-item"><i className="fa-solid fa-ban"></i> No Downloads</span>
+            <span className="badge-item"><i className="fa-solid fa-shield-halved"></i> Verified Stream</span>
+            <span className="badge-item"><i className="fa-solid fa-bolt"></i> Fast Playback</span>
             <span className="badge-item"><i className="fa-solid fa-gem"></i> 100% Free Access</span>
           </div>
         </div>

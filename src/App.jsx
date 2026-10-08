@@ -80,7 +80,19 @@ export default function App() {
     episode: null
   });
 
-  // 6. Toast Notifications
+  // 6. Body Scroll Lock when modals are open (restores on close/unmount)
+  useEffect(() => {
+    const isAnyModalOpen = supportModal.isOpen || playerModal.isOpen;
+    if (isAnyModalOpen) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [supportModal.isOpen, playerModal.isOpen]);
+
+  // 7. Toast Notifications
   const [toasts, setToasts] = useState([]);
 
   const showToast = useCallback((message, type = 'info') => {
