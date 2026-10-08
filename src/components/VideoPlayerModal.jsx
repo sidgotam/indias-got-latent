@@ -1,5 +1,24 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { isEpisodeStreamReady, getVideoStreamUrl } from '../data/seriesData.js';
+import {
+  isEpisodeStreamReady,
+  getVideoDirectStreamUrl,
+  getVideoStreamUrl
+} from '../data/seriesData.js';
+
+function formatTime(seconds) {
+  if (isNaN(seconds) || seconds < 0) return '00:00';
+  const totalSecs = Math.floor(seconds);
+  const hrs = Math.floor(totalSecs / 3600);
+  const mins = Math.floor((totalSecs % 3600) / 60);
+  const secs = totalSecs % 60;
+
+  const pad = (n) => (n < 10 ? '0' + n : String(n));
+
+  if (hrs > 0) {
+    return `${hrs}:${pad(mins)}:${pad(secs)}`;
+  }
+  return `${pad(mins)}:${pad(secs)}`;
+}
 
 export default function VideoPlayerModal({
   isOpen,
@@ -13,16 +32,41 @@ export default function VideoPlayerModal({
   setAutoNext,
   showToast
 }) {
-  const [isTheater, setIsTheater] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [bufferedPercent, setBufferedPercent] = useState(0);
+  const [volume, setVolume] = useState(1);
+  const [isMuted, setIsMuted] = useState(false);
+  const [playbackRate, setPlaybackRate] = useState(1);
+  const [showSpeedMenu, setShowSpeedMenu] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [controlsVisible, setControlsVisible] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
+  const [isBuffering, setIsBuffering] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [useFallbackEmbed, setUseFallbackEmbed] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [doubleTapFeedback, setDoubleTapFeedback] = useState(null);
 
   const containerRef = useRef(null);
-  const iframeRef = useRef(null);
+  const videoRef = useRef(null);
+  const progressBarRef = useRef(null);
+  const controlsTimeoutRef = useRef(null);
+  const lastTapRef = useRef({ time: 0, x: 0 });
 
-  // Sync fullscreen state with document.fullscreenElement
+  // Lock background scrolling when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [isOpen]);
+
+  // Sync fullscreen state
   const updateFullscreenState = useCallback(() => {
     const fsElement = document.fullscreenElement || document.webkitFullscreenElement;
     const isFs = Boolean(
@@ -33,67 +77,136 @@ export default function VideoPlayerModal({
     setIsFullscreen(isFs);
   }, []);
 
-  // Listen to fullscreen changes across all browsers
   useEffect(() => {
     document.addEventListener('fullscreenchange', updateFullscreenState);
     document.addEventListener('webkitfullscreenchange', updateFullscreenState);
-
     return () => {
       document.removeEventListener('fullscreenchange', updateFullscreenState);
       document.removeEventListener('webkitfullscreenchange', updateFullscreenState);
     };
   }, [updateFullscreenState]);
 
-  // Handle keyboard events (Escape key)
+  // Auto-hide controls timer during playback
+  const scheduleControlsHide = useCallback(() => {
+    if (controlsTimeoutRef.current) {
+      clearTimeout(controlsTimeoutRef.current);
+    }
+    setControlsVisible(true);
+    if (isPlaying) {
+      controlsTimeoutRef.current = setTimeout(() => {
+        setControlsVisible(false);
+        setShowSpeedMenu(false);
+      }, 2800);
+    }
+  }, [isPlaying]);
+
+  const handleUserActivity = useCallback(() => {
+    scheduleControlsHide();
+  }, [scheduleControlsHide]);
+
+  // Reset state when episode changes
+  useEffect(() => {
+    if (isOpen && episode) {
+      setIsPlaying(false);
+      setCurrentTime(0);
+      setDuration(0);
+      setBufferedPercent(0);
+      setIsLoading(true);
+      setIsBuffering(false);
+      setHasError(false);
+      setUseFallbackEmbed(false);
+      setShowSpeedMenu(false);
+      setControlsVisible(true);
+
+      if (videoRef.current) {
+        videoRef.current.currentTime = 0;
+        videoRef.current.playbackRate = playbackRate;
+        videoRef.current.load();
+      }
+    }
+  }, [isOpen, episode?.id]);
+
+  // Keyboard navigation & controls
   useEffect(() => {
     if (!isOpen) return;
 
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') {
-        if (document.fullscreenElement || document.webkitFullscreenElement) {
-          // If in fullscreen, exit fullscreen first
-          if (document.exitFullscreen) {
-            document.exitFullscreen().catch(() => {});
-          } else if (document.webkitExitFullscreen) {
-            document.webkitExitFullscreen().catch(() => {});
+      // Ignore if user is in an input or textarea
+      if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+
+      switch (e.key) {
+        case 'Escape':
+          if (document.fullscreenElement || document.webkitFullscreenElement) {
+            if (document.exitFullscreen) {
+              document.exitFullscreen().catch(() => {});
+            } else if (document.webkitExitFullscreen) {
+              document.webkitExitFullscreen().catch(() => {});
+            }
+          } else if (isDrawerOpen) {
+            setIsDrawerOpen(false);
+          } else {
+            onClose();
           }
-        } else if (isDrawerOpen) {
-          setIsDrawerOpen(false);
-        } else {
-          onClose();
-        }
+          break;
+        case ' ':
+        case 'k':
+        case 'K':
+          e.preventDefault();
+          togglePlay();
+          break;
+        case 'ArrowLeft':
+        case 'j':
+        case 'J':
+          e.preventDefault();
+          seekRelative(-10);
+          break;
+        case 'ArrowRight':
+        case 'l':
+        case 'L':
+          e.preventDefault();
+          seekRelative(10);
+          break;
+        case 'ArrowUp':
+          e.preventDefault();
+          setVolume((v) => {
+            const next = Math.min(1, v + 0.1);
+            if (videoRef.current) videoRef.current.volume = next;
+            setIsMuted(false);
+            return next;
+          });
+          break;
+        case 'ArrowDown':
+          e.preventDefault();
+          setVolume((v) => {
+            const next = Math.max(0, v - 0.1);
+            if (videoRef.current) videoRef.current.volume = next;
+            return next;
+          });
+          break;
+        case 'm':
+        case 'M':
+          e.preventDefault();
+          toggleMute();
+          break;
+        case 'f':
+        case 'F':
+          e.preventDefault();
+          toggleFullscreen();
+          break;
+        default:
+          break;
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, isDrawerOpen, onClose]);
-
-  // Reset loading and error states when episode changes or modal opens
-  useEffect(() => {
-    if (isOpen && episode) {
-      setIsLoading(true);
-      setHasError(false);
-
-      // Timeout fallback: if iframe doesn't load within 14s, show retry option
-      const timer = setTimeout(() => {
-        setIsLoading((loading) => {
-          if (loading) {
-            setHasError(true);
-            return false;
-          }
-          return false;
-        });
-      }, 14000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [isOpen, episode?.id]);
+  }, [isOpen, isDrawerOpen, isPlaying, duration, onClose]);
 
   if (!isOpen || !episode) return null;
 
   const isPlayable = isEpisodeStreamReady(episode);
-  const embedUrl = isPlayable ? getVideoStreamUrl(episode.id) : '';
+  const directVideoUrl = isPlayable ? getVideoDirectStreamUrl(episode.id) : '';
+  const embedFallbackUrl = isPlayable ? getVideoStreamUrl(episode.id) : '';
 
   const currentIndex = allEpisodes.findIndex((e) => e.id === episode.id);
   const hasPrev = currentIndex > 0;
@@ -108,6 +221,72 @@ export default function VideoPlayerModal({
   const handleNext = () => {
     if (hasNext) {
       onSelectEpisode(allEpisodes[currentIndex + 1]);
+    }
+  };
+
+  // Video playback functions
+  const togglePlay = () => {
+    if (!videoRef.current) return;
+    if (videoRef.current.paused || videoRef.current.ended) {
+      videoRef.current.play().then(() => {
+        setIsPlaying(true);
+        scheduleControlsHide();
+      }).catch((err) => {
+        console.warn('Playback play promise error:', err);
+      });
+    } else {
+      videoRef.current.pause();
+      setIsPlaying(false);
+      setControlsVisible(true);
+    }
+  };
+
+  const seekRelative = (delta) => {
+    if (!videoRef.current) return;
+    const next = Math.max(0, Math.min(videoRef.current.currentTime + delta, duration || 0));
+    videoRef.current.currentTime = next;
+    setCurrentTime(next);
+    scheduleControlsHide();
+  };
+
+  const handleScrubberClick = (e) => {
+    if (!progressBarRef.current || !videoRef.current || !duration) return;
+    const rect = progressBarRef.current.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const percent = Math.max(0, Math.min(clickX / rect.width, 1));
+    const nextTime = percent * duration;
+    videoRef.current.currentTime = nextTime;
+    setCurrentTime(nextTime);
+    scheduleControlsHide();
+  };
+
+  const toggleMute = () => {
+    if (!videoRef.current) return;
+    const nextMuted = !isMuted;
+    setIsMuted(nextMuted);
+    videoRef.current.muted = nextMuted;
+    scheduleControlsHide();
+  };
+
+  const handleVolumeChange = (e) => {
+    const val = parseFloat(e.target.value);
+    setVolume(val);
+    setIsMuted(val === 0);
+    if (videoRef.current) {
+      videoRef.current.volume = val;
+      videoRef.current.muted = val === 0;
+    }
+  };
+
+  const handleSpeedSelect = (rate) => {
+    setPlaybackRate(rate);
+    setShowSpeedMenu(false);
+    if (videoRef.current) {
+      videoRef.current.playbackRate = rate;
+    }
+    scheduleControlsHide();
+    if (showToast) {
+      showToast(`Speed set to ${rate}x`);
     }
   };
 
@@ -128,24 +307,88 @@ export default function VideoPlayerModal({
         }
       }
     } catch (err) {
-      console.warn('Fullscreen toggle failed:', err);
-      // Fallback: Toggle in-viewport expanded theater mode if fullscreen API rejected
-      setIsTheater((prev) => !prev);
+      console.warn('Fullscreen request failed:', err);
     }
   };
 
-  const handleIframeLoad = () => {
+  // Double-tap seeking on touch devices
+  const handleVideoTouch = (e) => {
+    const now = Date.now();
+    const touch = e.changedTouches ? e.changedTouches[0] : e;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = touch.clientX - rect.left;
+    const width = rect.width;
+    const timeDiff = now - lastTapRef.current.time;
+
+    if (timeDiff < 320 && Math.abs(x - lastTapRef.current.x) < 80) {
+      // Double tap detected
+      if (x < width * 0.4) {
+        // Double tap on left side -> rewind 10s
+        seekRelative(-10);
+        setDoubleTapFeedback({ type: 'rewind', id: now });
+        setTimeout(() => setDoubleTapFeedback(null), 700);
+      } else if (x > width * 0.6) {
+        // Double tap on right side -> forward 10s
+        seekRelative(10);
+        setDoubleTapFeedback({ type: 'forward', id: now });
+        setTimeout(() => setDoubleTapFeedback(null), 700);
+      } else {
+        togglePlay();
+      }
+      lastTapRef.current = { time: 0, x: 0 };
+    } else {
+      // Single tap -> toggle controls
+      lastTapRef.current = { time: now, x };
+      setControlsVisible((prev) => !prev);
+      if (!controlsVisible) {
+        scheduleControlsHide();
+      }
+    }
+  };
+
+  // Video event handlers
+  const onLoadedMetadata = () => {
+    if (videoRef.current) {
+      setDuration(videoRef.current.duration || 0);
+      setIsLoading(false);
+      setHasError(false);
+    }
+  };
+
+  const onTimeUpdate = () => {
+    if (videoRef.current) {
+      setCurrentTime(videoRef.current.currentTime);
+      if (videoRef.current.buffered.length > 0 && videoRef.current.duration) {
+        const bufferedEnd = videoRef.current.buffered.end(videoRef.current.buffered.length - 1);
+        setBufferedPercent(Math.min(100, (bufferedEnd / videoRef.current.duration) * 100));
+      }
+    }
+  };
+
+  const onEnded = () => {
+    setIsPlaying(false);
+    setControlsVisible(true);
+    if (!isWatched) {
+      onToggleWatched(episode.id);
+    }
+    if (autoNext && hasNext) {
+      if (showToast) {
+        showToast('Auto-playing next episode in 3 seconds...');
+      }
+      setTimeout(() => {
+        handleNext();
+      }, 2500);
+    }
+  };
+
+  const handleVideoError = (err) => {
+    console.warn('Native video error encountered, falling back to embedded player:', err);
+    // If native video playback errors out (e.g., Safari codec incompatibility), fall back to embed
+    setUseFallbackEmbed(true);
     setIsLoading(false);
-    setHasError(false);
   };
 
-  const handleRetry = () => {
-    setIsLoading(true);
-    setHasError(false);
-    if (iframeRef.current) {
-      iframeRef.current.src = embedUrl;
-    }
-  };
+  const progressPercent = duration ? Math.min(100, (currentTime / duration) * 100) : 0;
 
   const isVip = episode.isPremium || episode.season === 'VIP';
   const tagText = isVip
@@ -162,14 +405,16 @@ export default function VideoPlayerModal({
     >
       <div className="player-modal-backdrop" id="playerBackdrop" onClick={onClose}></div>
 
-      {/* Dedicated Player Wrapper - Targets Fullscreen Only */}
+      {/* Main Responsive Player Container */}
       <div
-        className={`player-container ${isTheater ? 'is-theater' : ''} ${isFullscreen ? 'is-fullscreen' : ''}`}
+        className={`player-container ${isFullscreen ? 'is-fullscreen' : ''}`}
         ref={containerRef}
         id="playerFullscreenContainer"
+        onMouseMove={handleUserActivity}
+        onTouchStart={handleUserActivity}
       >
-        {/* Player Header */}
-        <div className="player-header">
+        {/* Episode Header */}
+        <header className={`player-header ${!controlsVisible && isPlaying ? 'header-autohide' : ''}`}>
           <div className="player-header-info">
             <span className="player-tag" id="playerEpisodeTag">
               {tagText}
@@ -183,7 +428,7 @@ export default function VideoPlayerModal({
           </div>
 
           <div className="player-header-actions">
-            {/* Fullscreen Toggle Button */}
+            {/* Fullscreen Toggle in Header */}
             <button
               type="button"
               className={`player-ctrl-btn btn-fullscreen-player ${isFullscreen ? 'active' : ''}`}
@@ -192,28 +437,8 @@ export default function VideoPlayerModal({
               aria-label={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
               onClick={toggleFullscreen}
             >
-              <i
-                className={
-                  isFullscreen
-                    ? 'fa-solid fa-compress'
-                    : 'fa-solid fa-up-right-and-down-left-and-up-left-to-down-right'
-                }
-              ></i>
+              <i className={isFullscreen ? 'fa-solid fa-compress' : 'fa-solid fa-expand'}></i>
             </button>
-
-            {/* Theater Mode Button (Hidden on small mobile) */}
-            {!isFullscreen && (
-              <button
-                type="button"
-                className={`player-ctrl-btn btn-theater-player ${isTheater ? 'active' : ''}`}
-                id="toggleTheaterBtn"
-                title="Theater Mode"
-                aria-label="Toggle Theater Mode"
-                onClick={() => setIsTheater(!isTheater)}
-              >
-                <i className="fa-solid fa-expand"></i>
-              </button>
-            )}
 
             {/* Close Button */}
             <button
@@ -221,55 +446,60 @@ export default function VideoPlayerModal({
               className="player-ctrl-btn btn-close-player"
               id="closePlayerBtn"
               title="Close (Esc)"
-              aria-label="Close Video Player"
+              aria-label="Close player"
               onClick={onClose}
             >
               <i className="fa-solid fa-xmark"></i>
             </button>
           </div>
-        </div>
+        </header>
 
-        {/* Video Wrapper */}
-        <div className="video-frame-wrapper" id="videoWrapper">
-          {/* Loading Skeleton / Spinner */}
-          {isPlayable && isLoading && !hasError && (
-            <div className="player-loader" aria-live="polite">
-              <div className="player-loader-spinner"></div>
-              <span className="player-loader-text">Loading {episode.title}...</span>
-            </div>
+        {/* Video Area (Dominates screen) */}
+        <div
+          className="video-frame-wrapper"
+          id="videoWrapper"
+          onClick={handleUserActivity}
+          onTouchEnd={handleVideoTouch}
+        >
+          {/* Native HTML5 Video Player */}
+          {isPlayable && !useFallbackEmbed && (
+            <video
+              ref={videoRef}
+              id="cinemaNativeVideo"
+              className="cinema-native-video"
+              src={directVideoUrl}
+              playsInline
+              preload="metadata"
+              onLoadedMetadata={onLoadedMetadata}
+              onTimeUpdate={onTimeUpdate}
+              onWaiting={() => setIsBuffering(true)}
+              onPlaying={() => {
+                setIsBuffering(false);
+                setIsLoading(false);
+                setIsPlaying(true);
+              }}
+              onPause={() => setIsPlaying(false)}
+              onEnded={onEnded}
+              onError={handleVideoError}
+            />
           )}
 
-          {/* Error State Fallback */}
-          {isPlayable && hasError && (
-            <div className="player-error-overlay" role="alert">
-              <div className="player-error-card">
-                <i className="fa-solid fa-triangle-exclamation error-icon"></i>
-                <h4>Video is temporarily unavailable.</h4>
-                <p>Please check your connection or retry playback.</p>
-                <div className="player-error-actions">
-                  <button type="button" className="btn-retry-stream" onClick={handleRetry}>
-                    <i className="fa-solid fa-rotate-right"></i>
-                    <span>Retry</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Video Stream Embed */}
-          {isPlayable ? (
+          {/* Fallback Sandboxed Stream Embed */}
+          {isPlayable && useFallbackEmbed && (
             <iframe
-              ref={iframeRef}
               id="cinemaVideoPlayerFrame"
               className="cinema-player-frame"
-              src={embedUrl}
+              src={embedFallbackUrl}
               title={episode.title}
+              sandbox="allow-scripts allow-same-origin allow-forms allow-presentation"
               allow="autoplay; fullscreen; picture-in-picture"
               allowFullScreen
-              onLoad={handleIframeLoad}
-            ></iframe>
-          ) : (
-            /* Coming Soon Overlay */
+              onLoad={() => setIsLoading(false)}
+            />
+          )}
+
+          {/* Coming Soon Overlay */}
+          {!isPlayable && (
             <div className="unloaded-notice-overlay" id="unloadedNoticeOverlay">
               <div className="unloaded-card">
                 <div className="unloaded-pill">
@@ -277,12 +507,12 @@ export default function VideoPlayerModal({
                 </div>
                 <h3 id="unloadedTitle">{episode.title}</h3>
                 <p className="unloaded-desc">
-                  This episode is being processed for streaming. Season 1 Episodes 1 through 8 are
-                  ready to watch right now!
+                  This episode is currently being processed for streaming. Season 1 Episodes 1 through 8 are
+                  ready to stream right now in full unedited 1080p HD!
                 </p>
 
                 <div className="unloaded-quick-watch">
-                  <span className="quick-watch-label">Stream Available Episodes:</span>
+                  <span className="quick-watch-label">Stream Ready Episodes:</span>
                   <div className="quick-watch-buttons">
                     <button
                       type="button"
@@ -316,11 +546,202 @@ export default function VideoPlayerModal({
               </div>
             </div>
           )}
+
+          {/* Buffering Spinner */}
+          {isPlayable && (isLoading || isBuffering) && !hasError && (
+            <div className="player-loader" aria-live="polite">
+              <div className="player-loader-spinner"></div>
+              <span className="player-loader-text">
+                {isLoading ? `Loading ${episode.title}...` : 'Buffering...'}
+              </span>
+            </div>
+          )}
+
+          {/* Double Tap Ripple Animations */}
+          {doubleTapFeedback && (
+            <div
+              className={`double-tap-feedback ${
+                doubleTapFeedback.type === 'rewind' ? 'feedback-left' : 'feedback-right'
+              }`}
+            >
+              <div className="double-tap-pill">
+                <i
+                  className={
+                    doubleTapFeedback.type === 'rewind'
+                      ? 'fa-solid fa-rotate-left'
+                      : 'fa-solid fa-rotate-right'
+                  }
+                ></i>
+                <span>{doubleTapFeedback.type === 'rewind' ? '-10s' : '+10s'}</span>
+              </div>
+            </div>
+          )}
+
+          {/* Center Play / Pause Button Overlay (when paused or ended) */}
+          {isPlayable && !useFallbackEmbed && !isPlaying && !isLoading && !isBuffering && (
+            <button
+              type="button"
+              className="center-play-button"
+              aria-label="Play"
+              onClick={(e) => {
+                e.stopPropagation();
+                togglePlay();
+              }}
+            >
+              <i className="fa-solid fa-play"></i>
+            </button>
+          )}
+
+          {/* In-Video Professional OTT Controls Bar */}
+          {isPlayable && !useFallbackEmbed && (
+            <div
+              className={`ott-controls-wrapper ${controlsVisible ? 'visible' : 'hidden'}`}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Progress Scrubber Bar */}
+              <div
+                className="ott-scrubber-container"
+                ref={progressBarRef}
+                onClick={handleScrubberClick}
+              >
+                <div className="ott-scrubber-track">
+                  {/* Buffered Track */}
+                  <div
+                    className="ott-scrubber-buffered"
+                    style={{ width: `${bufferedPercent}%` }}
+                  />
+                  {/* Played Track */}
+                  <div
+                    className="ott-scrubber-played"
+                    style={{ width: `${progressPercent}%` }}
+                  >
+                    <div className="ott-scrubber-thumb" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom Controls Row */}
+              <div className="ott-controls-row">
+                <div className="ott-controls-left">
+                  {/* Play / Pause Toggle */}
+                  <button
+                    type="button"
+                    className="ott-btn ott-btn-play"
+                    aria-label={isPlaying ? 'Pause' : 'Play'}
+                    onClick={togglePlay}
+                  >
+                    <i className={isPlaying ? 'fa-solid fa-pause' : 'fa-solid fa-play'}></i>
+                  </button>
+
+                  {/* Rewind 10s */}
+                  <button
+                    type="button"
+                    className="ott-btn ott-btn-seek"
+                    aria-label="Rewind 10 seconds"
+                    title="Rewind 10s (Left Arrow)"
+                    onClick={() => seekRelative(-10)}
+                  >
+                    <i className="fa-solid fa-rotate-left"></i>
+                    <span className="seek-badge">10</span>
+                  </button>
+
+                  {/* Forward 10s */}
+                  <button
+                    type="button"
+                    className="ott-btn ott-btn-seek"
+                    aria-label="Forward 10 seconds"
+                    title="Forward 10s (Right Arrow)"
+                    onClick={() => seekRelative(10)}
+                  >
+                    <i className="fa-solid fa-rotate-right"></i>
+                    <span className="seek-badge">10</span>
+                  </button>
+
+                  {/* Time Counter */}
+                  <div className="ott-time-display">
+                    <span className="time-current">{formatTime(currentTime)}</span>
+                    <span className="time-sep">/</span>
+                    <span className="time-duration">{formatTime(duration)}</span>
+                  </div>
+                </div>
+
+                <div className="ott-controls-right">
+                  {/* Volume Control */}
+                  <div className="ott-volume-group">
+                    <button
+                      type="button"
+                      className="ott-btn ott-btn-volume"
+                      aria-label={isMuted || volume === 0 ? 'Unmute' : 'Mute'}
+                      onClick={toggleMute}
+                    >
+                      <i
+                        className={
+                          isMuted || volume === 0
+                            ? 'fa-solid fa-volume-xmark'
+                            : volume < 0.5
+                            ? 'fa-solid fa-volume-low'
+                            : 'fa-solid fa-volume-high'
+                        }
+                      ></i>
+                    </button>
+                    <input
+                      type="range"
+                      min="0"
+                      max="1"
+                      step="0.05"
+                      value={isMuted ? 0 : volume}
+                      onChange={handleVolumeChange}
+                      className="ott-volume-slider"
+                      aria-label="Volume slider"
+                    />
+                  </div>
+
+                  {/* Speed Selector */}
+                  <div className="ott-speed-group">
+                    <button
+                      type="button"
+                      className="ott-btn ott-btn-speed"
+                      aria-label="Playback speed"
+                      title="Playback speed"
+                      onClick={() => setShowSpeedMenu(!showSpeedMenu)}
+                    >
+                      <span>{playbackRate}x</span>
+                    </button>
+                    {showSpeedMenu && (
+                      <div className="ott-speed-menu">
+                        {[0.75, 1, 1.25, 1.5, 2].map((rate) => (
+                          <button
+                            key={rate}
+                            type="button"
+                            className={`ott-speed-item ${playbackRate === rate ? 'active' : ''}`}
+                            onClick={() => handleSpeedSelect(rate)}
+                          >
+                            {rate}x
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Fullscreen Button in Player */}
+                  <button
+                    type="button"
+                    className="ott-btn ott-btn-fullscreen"
+                    aria-label={isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
+                    title={isFullscreen ? 'Exit Fullscreen (F)' : 'Fullscreen (F)'}
+                    onClick={toggleFullscreen}
+                  >
+                    <i className={isFullscreen ? 'fa-solid fa-compress' : 'fa-solid fa-expand'}></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* Video Footer Controls */}
-        <div className={`player-footer ${isFullscreen ? 'fullscreen-footer' : ''}`}>
-          {/* Row 1: Episode Navigation (Prev / Next) */}
+        {/* Video Footer Controls (Compact Episode Management) */}
+        <footer className="player-footer">
+          {/* Row 1: Episode Navigation (Previous / Next) */}
           <div className="player-nav-row">
             <button
               type="button"
@@ -328,18 +749,19 @@ export default function VideoPlayerModal({
               id="prevEpisodeBtn"
               disabled={!hasPrev}
               onClick={handlePrev}
-              aria-label="Previous Episode"
+              aria-label="Previous episode"
             >
               <i className="fa-solid fa-backward-step"></i>
               <span>Previous Episode</span>
             </button>
+
             <button
               type="button"
               className="btn-player-nav btn-next-ep"
               id="nextEpisodeBtn"
               disabled={!hasNext}
               onClick={handleNext}
-              aria-label="Next Episode"
+              aria-label="Next episode"
             >
               <span>Next Episode</span>
               <i className="fa-solid fa-forward-step"></i>
@@ -369,40 +791,42 @@ export default function VideoPlayerModal({
                 <i className={isWatched ? 'fa-solid fa-circle-check' : 'fa-regular fa-circle-check'}></i>
                 <span id="markWatchedText">{isWatched ? 'Watched' : 'Mark Watched'}</span>
               </button>
+
               <button
                 type="button"
                 className={`btn-player-action ${isDrawerOpen ? 'active' : ''}`}
                 id="toggleEpisodeListBtn"
                 onClick={() => setIsDrawerOpen(!isDrawerOpen)}
                 aria-expanded={isDrawerOpen}
-                aria-label="Open Episode Selector"
+                aria-label="Open episode drawer"
               >
                 <i className="fa-solid fa-list-ul"></i>
                 <span>Episodes</span>
               </button>
             </div>
           </div>
-        </div>
+        </footer>
 
-        {/* In-Player Episode Quick Switch Drawer */}
+        {/* In-Player Episode Drawer */}
         <div
           className={`player-episode-drawer ${isDrawerOpen ? 'active' : 'hidden'}`}
           id="playerEpisodeDrawer"
         >
           <div className="drawer-header">
             <h4>
-              <i className="fa-solid fa-microphone-lines"></i> Quick Episode Switch
+              <i className="fa-solid fa-microphone-lines"></i> Episodes Guide
             </h4>
             <button
               type="button"
               className="btn-close-drawer"
               id="closeDrawerBtn"
               onClick={() => setIsDrawerOpen(false)}
-              aria-label="Close episode selector"
+              aria-label="Close episode guide"
             >
               <i className="fa-solid fa-xmark"></i>
             </button>
           </div>
+
           <div className="drawer-episode-list" id="drawerEpisodeList">
             {allEpisodes.map((ep) => {
               const active = ep.id === episode.id;

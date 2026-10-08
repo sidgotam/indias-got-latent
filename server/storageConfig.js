@@ -103,19 +103,21 @@ function streamVideoChunk(episodeId, req, res) {
     upstreamHeaders['Range'] = req.headers.range;
   }
 
+  const isMatroska = Boolean(storage.filename && storage.filename.toLowerCase().endsWith('.mkv'));
+
   // Request upstream stream
   const upstreamReq = https.get(upstreamUrl, { headers: upstreamHeaders }, (upstreamRes) => {
     // If upstream redirects (302/303/307), follow location
     if (upstreamRes.statusCode >= 300 && upstreamRes.statusCode < 400 && upstreamRes.headers.location) {
       https.get(upstreamRes.headers.location, { headers: upstreamHeaders }, (redirectRes) => {
-        pipeStreamResponse(redirectRes, req, res);
+        pipeStreamResponse(redirectRes, req, res, isMatroska);
       }).on('error', (err) => {
         handleStreamError(err, res);
       });
       return;
     }
 
-    pipeStreamResponse(upstreamRes, req, res);
+    pipeStreamResponse(upstreamRes, req, res, isMatroska);
   });
 
   upstreamReq.on('error', (err) => {
@@ -128,10 +130,11 @@ function streamVideoChunk(episodeId, req, res) {
   });
 }
 
-function pipeStreamResponse(upstreamRes, req, res) {
+function pipeStreamResponse(upstreamRes, req, res, isMatroska) {
   const statusCode = upstreamRes.statusCode === 206 ? 206 : 200;
+  const contentType = isMatroska ? 'video/webm' : 'video/mp4';
   const headers = {
-    'Content-Type': 'video/mp4',
+    'Content-Type': contentType,
     'Accept-Ranges': 'bytes',
     'Cache-Control': 'private, max-age=3600',
     'X-Content-Type-Options': 'nosniff'
@@ -145,6 +148,11 @@ function pipeStreamResponse(upstreamRes, req, res) {
   }
 
   res.writeHead(statusCode, headers);
+
+  if (req.method === 'HEAD') {
+    return res.end();
+  }
+
   upstreamRes.pipe(res);
 
   res.on('close', () => {
@@ -160,8 +168,8 @@ function handleStreamError(err, res) {
 }
 
 /**
- * Returns clean HTML for the embedded player frame.
- * Shields the top bar so no external Drive navigation or pop-out icons appear.
+ * Returns clean HTML for the embedded player frame fallback.
+ * Uses sandboxing without allow-popups to prevent external redirects.
  */
 function getEmbedHtml(episodeId) {
   const storage = resolveEpisodeStorage(episodeId);
@@ -204,7 +212,7 @@ function getEmbedHtml(episodeId) {
       background: #000000;
       overflow: hidden;
     }
-    .player-shield-wrapper {
+    .player-stream-container {
       position: relative;
       width: 100%;
       height: 100%;
@@ -217,25 +225,14 @@ function getEmbedHtml(episodeId) {
       display: block;
       background: #000000;
     }
-    /* Top shield overlay blocks any native pop-out or drive branding button */
-    .player-top-shield {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 54px;
-      pointer-events: auto;
-      z-index: 10;
-      background: transparent;
-    }
   </style>
 </head>
 <body>
-  <div class="player-shield-wrapper">
-    <div class="player-top-shield" title="Playback Controls"></div>
+  <div class="player-stream-container">
     <iframe
       class="player-stream-frame"
       src="${upstreamUrl}"
+      sandbox="allow-scripts allow-same-origin allow-forms allow-presentation"
       allow="autoplay; fullscreen; picture-in-picture"
       allowfullscreen
     ></iframe>
