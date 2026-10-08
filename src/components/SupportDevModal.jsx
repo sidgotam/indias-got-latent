@@ -68,14 +68,15 @@ export default function SupportDevModal({
   };
 
   return (
-    <div className="donate-modal active" id="donateModal" role="dialog" aria-modal="true">
+    <div className="donate-modal active" id="donateModal" role="dialog" aria-modal="true" aria-labelledby="donateTitle">
       <div className="modal-backdrop" id="donateBackdrop" onClick={onClose}></div>
       <div className="donate-dialog">
         <button 
           type="button" 
           className="btn-close-donate" 
           id="closeDonateBtn" 
-          title="Close"
+          title="Close modal"
+          aria-label="Close Support Modal"
           onClick={onClose}
         >
           <i className="fa-solid fa-xmark"></i>
@@ -88,7 +89,7 @@ export default function SupportDevModal({
           <div className="donate-badge-pill">
             <i className="fa-solid fa-heart"></i> <span>SUPPORT THE DEVELOPER</span>
           </div>
-          <h3 className="donate-title">Enjoying India's Got Latent?</h3>
+          <h3 className="donate-title" id="donateTitle">Enjoying India's Got Latent?</h3>
           <p className="donate-subtitle">
             100% ad-free & uncensored stream! If you appreciate the platform, consider buying a chai to help keep the stream fast and alive. 💖
           </p>
@@ -107,10 +108,9 @@ export default function SupportDevModal({
                   id="developerQrImg" 
                   className="developer-qr-img"
                   width="210"
-                  height="290"
+                  height="280"
                   loading="eager"
                   onError={(e) => {
-                    // Fallback to developer_qr.jpg if qr.jpg ever encounters an issue
                     if (!e.target.dataset.tried) {
                       e.target.dataset.tried = 'true';
                       e.target.src = '/assets/developer_qr.jpg';
@@ -132,7 +132,7 @@ export default function SupportDevModal({
               <span className="detail-section-label">
                 <i className="fa-solid fa-mug-hot"></i> Choose Contribution Amount
               </span>
-              <div className="chai-tier-grid">
+              <div className="chai-tier-grid" role="group" aria-label="Contribution Amount">
                 <button 
                   type="button"
                   className={`chai-tier-btn ${selectedAmount === '20' ? 'active' : ''}`}
@@ -189,43 +189,45 @@ export default function SupportDevModal({
               </a>
 
               <div className="upi-apps-row">
-                <span className="upi-apps-label">Or open directly:</span>
-                <a 
-                  href={currentUpiUrl} 
-                  className="upi-app-pill upi-intent-link" 
-                  data-app="gpay" 
-                  title="Open Google Pay"
-                  onClick={handleIntentClick}
-                >
-                  <i className="fa-brands fa-google-pay"></i> GPay
-                </a>
-                <a 
-                  href={currentUpiUrl} 
-                  className="upi-app-pill upi-intent-link" 
-                  data-app="phonepe" 
-                  title="Open PhonePe"
-                  onClick={handleIntentClick}
-                >
-                  <i className="fa-solid fa-bolt"></i> PhonePe
-                </a>
-                <a 
-                  href={currentUpiUrl} 
-                  className="upi-app-pill upi-intent-link" 
-                  data-app="paytm" 
-                  title="Open Paytm"
-                  onClick={handleIntentClick}
-                >
-                  <i className="fa-solid fa-wallet"></i> Paytm
-                </a>
-                <a 
-                  href={currentUpiUrl} 
-                  className="upi-app-pill upi-intent-link" 
-                  data-app="bhim" 
-                  title="Open BHIM"
-                  onClick={handleIntentClick}
-                >
-                  <i className="fa-solid fa-building-columns"></i> BHIM
-                </a>
+                <span className="upi-apps-label">Quick apps:</span>
+                <div className="upi-app-pills-wrap">
+                  <a 
+                    href={currentUpiUrl} 
+                    className="upi-app-pill upi-intent-link" 
+                    data-app="gpay" 
+                    title="Open Google Pay"
+                    onClick={handleIntentClick}
+                  >
+                    <i className="fa-brands fa-google-pay"></i> GPay
+                  </a>
+                  <a 
+                    href={currentUpiUrl} 
+                    className="upi-app-pill upi-intent-link" 
+                    data-app="phonepe" 
+                    title="Open PhonePe"
+                    onClick={handleIntentClick}
+                  >
+                    <i className="fa-solid fa-bolt"></i> PhonePe
+                  </a>
+                  <a 
+                    href={currentUpiUrl} 
+                    className="upi-app-pill upi-intent-link" 
+                    data-app="paytm" 
+                    title="Open Paytm"
+                    onClick={handleIntentClick}
+                  >
+                    <i className="fa-solid fa-wallet"></i> Paytm
+                  </a>
+                  <a 
+                    href={currentUpiUrl} 
+                    className="upi-app-pill upi-intent-link" 
+                    data-app="bhim" 
+                    title="Open BHIM"
+                    onClick={handleIntentClick}
+                  >
+                    <i className="fa-solid fa-building-columns"></i> BHIM
+                  </a>
+                </div>
               </div>
             </div>
 
@@ -241,6 +243,7 @@ export default function SupportDevModal({
                   className={`btn-copy-upi ${copied ? 'copied' : ''}`} 
                   id="copyUpiBtn" 
                   title="Copy UPI ID"
+                  aria-label="Copy UPI ID to clipboard"
                   onClick={handleCopyUpi}
                 >
                   <i className={copied ? "fa-solid fa-check" : "fa-regular fa-copy"}></i> 
@@ -269,7 +272,8 @@ export default function SupportDevModal({
             id="donateContributedBtn"
             onClick={onContributed}
           >
-            <i className="fa-solid fa-heart"></i> I Have Contributed!
+            <i className="fa-solid fa-heart"></i>
+            <span>I Have Contributed!</span>
           </button>
           <button 
             type="button" 

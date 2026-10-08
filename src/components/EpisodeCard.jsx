@@ -12,11 +12,22 @@ export default function EpisodeCard({ episode, isWatched, onSelect }) {
     onSelect(episode);
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onSelect(episode);
+    }
+  };
+
   return (
-    <div 
+    <article 
       className={`episode-card ${isVip ? 'is-vip' : ''} ${isPlayable ? 'is-stream-ready' : ''}`}
       data-id={episode.id}
       onClick={handleClick}
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+      role="button"
+      aria-label={`${seasonTag}: ${episode.title} - ${isPlayable ? 'Play video' : 'Episode info'}`}
     >
       <div className="card-thumbnail-wrap" data-action="play">
         <picture>
@@ -28,8 +39,8 @@ export default function EpisodeCard({ episode, isWatched, onSelect }) {
             src={episode.thumbnail || '/assets/thumbnails/s1_thumb.jpg'} 
             alt={episode.title} 
             className="card-img" 
-            width="240" 
-            height="135" 
+            width="320" 
+            height="180" 
             loading="lazy" 
             decoding="async"
           />
@@ -48,11 +59,13 @@ export default function EpisodeCard({ episode, isWatched, onSelect }) {
           type="button"
           className={`card-play-hover-btn ${isPlayable ? 'btn-hover-live' : ''}`} 
           title={isPlayable ? 'Stream Episode' : 'Episode Info'}
+          aria-label={isPlayable ? 'Stream Episode' : 'Episode Info'}
+          tabIndex={-1}
         >
           <i className="fa-solid fa-play"></i>
         </button>
         {isWatched && (
-          <div className="card-progress-bar">
+          <div className="card-progress-bar" title="Watched">
             <div className="progress-fill"></div>
           </div>
         )}
@@ -79,10 +92,12 @@ export default function EpisodeCard({ episode, isWatched, onSelect }) {
         <button 
           type="button"
           className={`btn-quick-play ${isPlayable ? 'btn-live-stream' : ''}`}
+          tabIndex={-1}
         >
-          <i className="fa-solid fa-play"></i> {isPlayable ? 'Watch Video' : 'Episode Info'}
+          <i className="fa-solid fa-play"></i>
+          <span>{isPlayable ? 'Watch Video' : 'Episode Info'}</span>
         </button>
       </div>
-    </div>
+    </article>
   );
 }

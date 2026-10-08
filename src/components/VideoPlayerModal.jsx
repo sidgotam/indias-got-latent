@@ -71,7 +71,7 @@ export default function VideoPlayerModal({
     : `S${episode.season} • EP ${episode.episodeNum < 10 ? '0' + episode.episodeNum : episode.episodeNum}`;
 
   return (
-    <div className="player-modal active" id="playerModal" role="dialog" aria-modal="true">
+    <div className="player-modal active" id="playerModal" role="dialog" aria-modal="true" aria-labelledby="playerEpisodeTitle">
       <div className="player-modal-backdrop" id="playerBackdrop" onClick={onClose}></div>
 
       <div 
@@ -82,9 +82,11 @@ export default function VideoPlayerModal({
         <div className="player-header">
           <div className="player-header-info">
             <span className="player-tag" id="playerEpisodeTag">{tagText}</span>
-            <h3 className="player-title" id="playerEpisodeTitle">{episode.title}</h3>
+            <h3 className="player-title" id="playerEpisodeTitle" title={episode.title}>
+              {episode.title}
+            </h3>
             <span className="badge-protected">
-              <i className="fa-solid fa-shield-halved"></i> Ultra HD 1080p • Protected Stream
+              <i className="fa-solid fa-shield-halved"></i> 1080p Protected
             </span>
           </div>
 
@@ -94,15 +96,17 @@ export default function VideoPlayerModal({
               className="player-ctrl-btn btn-fullscreen-player" 
               id="fullscreenPlayerBtn" 
               title="Fullscreen"
+              aria-label="Toggle Fullscreen"
               onClick={toggleFullscreen}
             >
               <i className="fa-solid fa-up-right-and-down-left-and-up-left-to-down-right"></i>
             </button>
             <button 
               type="button"
-              className={`player-ctrl-btn ${isTheater ? 'active' : ''}`} 
+              className={`player-ctrl-btn btn-theater-player ${isTheater ? 'active' : ''}`} 
               id="toggleTheaterBtn" 
               title="Theater Mode"
+              aria-label="Toggle Theater Mode"
               onClick={() => setIsTheater(!isTheater)}
             >
               <i className="fa-solid fa-expand"></i>
@@ -112,6 +116,7 @@ export default function VideoPlayerModal({
               className="player-ctrl-btn btn-close-player" 
               id="closePlayerBtn" 
               title="Close (Esc)"
+              aria-label="Close Video Player"
               onClick={onClose}
             >
               <i className="fa-solid fa-xmark"></i>
@@ -124,7 +129,7 @@ export default function VideoPlayerModal({
           {/* Top Shield Overlay (Anti-download) */}
           <div className="anti-download-shield" id="antiDownloadShield">
             <div className="shield-watermark">
-              <i className="fa-solid fa-shield-halved"></i> INDIA'S GOT LATENT • PROTECTED STREAM • NO DOWNLOAD
+              <i className="fa-solid fa-shield-halved"></i> INDIA'S GOT LATENT • DIRECT STREAM
             </div>
           </div>
 
@@ -179,9 +184,8 @@ export default function VideoPlayerModal({
                 <div className="unloaded-actions">
                   <button 
                     type="button" 
-                    className="btn-quick-stream" 
+                    className="btn-quick-stream btn-back-guide" 
                     onClick={onClose}
-                    style={{ background: 'rgba(255,255,255,0.1)', borderColor: 'var(--border-subtle)', cursor: 'pointer' }}
                   >
                     <i className="fa-solid fa-xmark"></i> Back to Episode Guide
                   </button>
@@ -191,60 +195,73 @@ export default function VideoPlayerModal({
           )}
         </div>
 
-        {/* Video Footer Controls */}
+        {/* Video Footer Controls - Multi-Row Responsive Layout */}
         <div className="player-footer">
-          <div className="player-footer-left">
+          {/* Row 1: Episode Navigation (Prev / Next) */}
+          <div className="player-nav-row">
             <button 
               type="button"
-              className="btn-player-nav" 
+              className="btn-player-nav btn-prev-ep" 
               id="prevEpisodeBtn"
               disabled={!hasPrev}
               onClick={handlePrev}
+              aria-label="Previous Episode"
             >
-              <i className="fa-solid fa-backward-step"></i> Previous Episode
+              <i className="fa-solid fa-backward-step"></i>
+              <span>Previous Episode</span>
             </button>
             <button 
               type="button"
-              className="btn-player-nav" 
+              className="btn-player-nav btn-next-ep" 
               id="nextEpisodeBtn"
               disabled={!hasNext}
               onClick={handleNext}
+              aria-label="Next Episode"
             >
-              Next Episode <i className="fa-solid fa-forward-step"></i>
+              <span>Next Episode</span>
+              <i className="fa-solid fa-forward-step"></i>
             </button>
-            <label className="auto-play-toggle">
+          </div>
+
+          {/* Row 2: Secondary Controls (Autoplay, Watched, Episode Selector) */}
+          <div className="player-actions-row">
+            <label className="auto-play-toggle" htmlFor="autoNextCheck">
               <input 
                 type="checkbox" 
                 id="autoNextCheck" 
                 checked={autoNext} 
                 onChange={(e) => setAutoNext(e.target.checked)} 
               />
-              <span>Auto-play Next Episode</span>
+              <span className="toggle-label">Auto-play Next</span>
             </label>
-          </div>
 
-          <div className="player-footer-right">
-            <button 
-              type="button"
-              className={`btn-player-action ${isWatched ? 'active' : ''}`} 
-              id="markWatchedBtn"
-              onClick={() => onToggleWatched(episode.id)}
-            >
-              <i className={isWatched ? "fa-solid fa-circle-check" : "fa-regular fa-circle-check"}></i>
-              <span id="markWatchedText">{isWatched ? 'Watched' : 'Mark as Watched'}</span>
-            </button>
-            <button 
-              type="button"
-              className={`btn-player-action ${isDrawerOpen ? 'active' : ''}`} 
-              id="toggleEpisodeListBtn"
-              onClick={() => setIsDrawerOpen(!isDrawerOpen)}
-            >
-              <i className="fa-solid fa-list-ul"></i> Episode Selector
-            </button>
+            <div className="player-secondary-btns">
+              <button 
+                type="button"
+                className={`btn-player-action ${isWatched ? 'active' : ''}`} 
+                id="markWatchedBtn"
+                onClick={() => onToggleWatched(episode.id)}
+                aria-label={isWatched ? "Remove from watched" : "Mark as watched"}
+              >
+                <i className={isWatched ? "fa-solid fa-circle-check" : "fa-regular fa-circle-check"}></i>
+                <span id="markWatchedText">{isWatched ? 'Watched' : 'Mark Watched'}</span>
+              </button>
+              <button 
+                type="button"
+                className={`btn-player-action ${isDrawerOpen ? 'active' : ''}`} 
+                id="toggleEpisodeListBtn"
+                onClick={() => setIsDrawerOpen(!isDrawerOpen)}
+                aria-expanded={isDrawerOpen}
+                aria-label="Open Episode Selector"
+              >
+                <i className="fa-solid fa-list-ul"></i>
+                <span>Episodes</span>
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* In-Player Episode Quick Switch Drawer */}
+        {/* In-Player Episode Quick Switch Drawer / Bottom Sheet */}
         <div className={`player-episode-drawer ${isDrawerOpen ? 'active' : 'hidden'}`} id="playerEpisodeDrawer">
           <div className="drawer-header">
             <h4><i className="fa-solid fa-microphone-lines"></i> Quick Episode Switch</h4>
@@ -253,6 +270,7 @@ export default function VideoPlayerModal({
               className="btn-close-drawer" 
               id="closeDrawerBtn"
               onClick={() => setIsDrawerOpen(false)}
+              aria-label="Close episode selector"
             >
               <i className="fa-solid fa-xmark"></i>
             </button>
@@ -270,12 +288,20 @@ export default function VideoPlayerModal({
                     onSelectEpisode(ep);
                     setIsDrawerOpen(false);
                   }}
-                  style={{ cursor: 'pointer' }}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      onSelectEpisode(ep);
+                      setIsDrawerOpen(false);
+                    }
+                  }}
                 >
                   <img 
                     src={ep.thumbnail || '/assets/thumbnails/s1_thumb.webp'} 
                     alt={ep.title} 
                     className="drawer-ep-thumb"
+                    loading="lazy"
                   />
                   <div className="drawer-ep-info">
                     <span className="drawer-ep-tag">{tag}</span>

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import EpisodeCard from './EpisodeCard.jsx';
 
 export default function EpisodeSlider({
@@ -23,7 +23,7 @@ export default function EpisodeSlider({
 
   const scroll = (direction) => {
     if (!trackRef.current) return;
-    const scrollAmount = Math.max(340, Math.floor(trackRef.current.clientWidth * 0.75));
+    const scrollAmount = Math.max(280, Math.floor(trackRef.current.clientWidth * 0.75));
     trackRef.current.scrollBy({
       left: direction === 'next' ? scrollAmount : -scrollAmount,
       behavior: 'smooth'
@@ -53,6 +53,7 @@ export default function EpisodeSlider({
     <section 
       className={`slider-section ${isVip ? 'vip-slider-section' : ''}`} 
       id={sectionId}
+      aria-label={title}
     >
       <div className={`section-row-header ${isVip ? 'vip-row-header' : ''}`}>
         <div className="row-header-left">
@@ -62,16 +63,20 @@ export default function EpisodeSlider({
               <span className="badge-free"><i className="fa-solid fa-gift"></i> 100% FREE ACCESS</span>
             </div>
           )}
-          <h2 className={`row-title ${isVip ? 'vip-title' : ''}`}>
-            <span className={`row-glow-bar ${glowClass || ''}`}></span>
-            <i className={`fa-solid ${icon} title-icon ${isVip ? 'vip-icon-gold' : ''}`}></i> {title}
-          </h2>
-          {badge && <span className={`row-badge ${isVip ? 's2-badge' : ''}`}>{badge}</span>}
-          {liveBadge && (
-            <span className="row-badge row-badge-live">
-              <i className="fa-solid fa-circle"></i> {liveBadge}
-            </span>
-          )}
+          <div className="row-title-wrap">
+            <h2 className={`row-title ${isVip ? 'vip-title' : ''}`}>
+              <span className={`row-glow-bar ${glowClass || ''}`}></span>
+              <i className={`fa-solid ${icon} title-icon ${isVip ? 'vip-icon-gold' : ''}`}></i> {title}
+            </h2>
+            <div className="row-badges-wrap">
+              {badge && <span className={`row-badge ${isVip ? 's2-badge' : ''}`}>{badge}</span>}
+              {liveBadge && (
+                <span className="row-badge row-badge-live">
+                  <i className="fa-solid fa-circle"></i> {liveBadge}
+                </span>
+              )}
+            </div>
+          </div>
           {subtitle && (
             <p className={`row-subtitle ${isVip ? 'vip-subtitle' : ''}`}>{subtitle}</p>
           )}
@@ -81,11 +86,11 @@ export default function EpisodeSlider({
           {counterText && (
             <span className={`slider-counter ${isVip ? 'vip-counter' : ''}`}>{counterText}</span>
           )}
-          <div className="slider-nav-btns">
+          <div className="slider-nav-btns" aria-label="Slider Controls">
             <button 
               type="button"
               className={`slider-btn-prev ${isVip ? 'vip-btn-nav' : ''}`} 
-              aria-label="Slide Left"
+              aria-label={`Previous ${title} episodes`}
               title="Previous Episodes"
               onClick={() => scroll('prev')}
             >
@@ -94,7 +99,7 @@ export default function EpisodeSlider({
             <button 
               type="button"
               className={`slider-btn-next ${isVip ? 'vip-btn-nav' : ''}`} 
-              aria-label="Slide Right"
+              aria-label={`Next ${title} episodes`}
               title="Next Episodes"
               onClick={() => scroll('next')}
             >
@@ -122,7 +127,10 @@ export default function EpisodeSlider({
           onMouseLeave={handleMouseUp}
           onMouseUp={handleMouseUp}
           onMouseMove={handleMouseMove}
-          style={{ cursor: isDragging ? 'grabbing' : 'pointer' }}
+          style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+          tabIndex={0}
+          role="region"
+          aria-label={`${title} Episode Track`}
         >
           {episodes.map(ep => (
             <EpisodeCard 

@@ -10,16 +10,17 @@ export default function Footer({ onOpenSupport, onResetCache }) {
   };
 
   return (
-    <footer className="site-footer">
+    <footer className="site-footer" role="contentinfo">
       <div className="footer-container">
         <div className="footer-top">
           <div className="footer-brand">
             <div className="brand-logo">
               <span className="logo-icon"><i className="fa-solid fa-microphone-lines"></i></span>
               <span className="logo-text">IGL<span className="logo-accent">LATENT</span></span>
+              <span className="logo-badge">UNCENSORED</span>
             </div>
             <p className="footer-desc">
-              The ultimate horizontal streaming platform for India's Got Latent Season 1, Season 2, and free VIP Vault specials. Built with anti-download protection for Google Drive video streams.
+              The premium cinema streaming portal for India's Got Latent Season 1, Season 2, and free VIP Vault specials. Ultra-fast direct streaming with zero download risks and unedited cuts.
             </p>
           </div>
 
@@ -28,12 +29,12 @@ export default function Footer({ onOpenSupport, onResetCache }) {
             <ul>
               <li>
                 <a href="#season1Section" onClick={scrollTo('season1Section')} className="footer-link">
-                  <i className="fa-solid fa-microphone"></i> Season 1 (Episodes 1-12)
+                  <i className="fa-solid fa-microphone"></i> Season 1 (Episodes 1–12)
                 </a>
               </li>
               <li>
                 <a href="#season2Section" onClick={scrollTo('season2Section')} className="footer-link">
-                  <i className="fa-solid fa-fire"></i> Season 2 (Episodes 1-12)
+                  <i className="fa-solid fa-fire"></i> Season 2 (Episodes 1–12)
                 </a>
               </li>
               <li>
@@ -45,7 +46,7 @@ export default function Footer({ onOpenSupport, onResetCache }) {
           </div>
 
           <div className="footer-nav-col">
-            <h4>Streaming & Settings</h4>
+            <h4>Streaming & Options</h4>
             <ul>
               <li>
                 <a href="#season1Section" onClick={scrollTo('season1Section')} className="footer-link">
@@ -53,35 +54,37 @@ export default function Footer({ onOpenSupport, onResetCache }) {
                 </a>
               </li>
               <li>
-                <a 
-                  href="#support" 
-                  onClick={(e) => { e.preventDefault(); onOpenSupport(); }} 
-                  className="footer-link"
+                <button 
+                  type="button" 
+                  onClick={onOpenSupport} 
+                  className="footer-link footer-btn-link"
                   id="footerSupportLink"
                 >
-                  <i className="fa-solid fa-mug-hot"></i> Support the Developer (Buy a Chai)
-                </a>
+                  <i className="fa-solid fa-mug-hot"></i> Support the Developer (Chai)
+                </button>
               </li>
               <li>
-                <a 
-                  href="#reset" 
-                  onClick={(e) => { e.preventDefault(); onResetCache(); }} 
-                  className="footer-link"
+                <button 
+                  type="button" 
+                  onClick={onResetCache} 
+                  className="footer-link footer-btn-link"
                   id="footerResetLink"
                 >
-                  <i className="fa-solid fa-clock-rotate-left"></i> Reset Episode Cache
-                </a>
+                  <i className="fa-solid fa-clock-rotate-left"></i> Reset Episode Progress
+                </button>
               </li>
             </ul>
           </div>
         </div>
 
         <div className="footer-bottom">
-          <p>© 2026 INDIA'S GOT LATENT STREAM. All rights reserved. Ultra HD Cinema Streaming Platform.</p>
+          <p className="footer-copyright">
+            © 2026 INDIA'S GOT LATENT STREAM. All rights reserved. Ultra HD Cinema Streaming Platform.
+          </p>
           <div className="footer-security-badges">
-            <span className="badge-item"><i className="fa-solid fa-shield-check"></i> Right-Click Protected</span>
-            <span className="badge-item"><i className="fa-solid fa-ban"></i> No Downloads Allowed</span>
-            <span className="badge-item"><i className="fa-solid fa-gem"></i> 100% Free Streaming</span>
+            <span className="badge-item"><i className="fa-solid fa-shield-halved"></i> Protected Stream</span>
+            <span className="badge-item"><i className="fa-solid fa-ban"></i> No Downloads</span>
+            <span className="badge-item"><i className="fa-solid fa-gem"></i> 100% Free Access</span>
           </div>
         </div>
       </div>
