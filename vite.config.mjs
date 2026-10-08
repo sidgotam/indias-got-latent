@@ -1,9 +1,19 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { createRequire } from 'module';
+import path from 'path';
 
 const require = createRequire(import.meta.url);
-const { streamVideoChunk, getEmbedHtml } = require('./server/storageConfig.js');
+
+function getStorageModule() {
+  try {
+    const configPath = path.resolve('./server/storageConfig.js');
+    delete require.cache[configPath];
+    return require('./server/storageConfig.js');
+  } catch (e) {
+    return require('./server/storageConfig.js');
+  }
+}
 
 function videoApiPlugin() {
   return {
@@ -12,12 +22,13 @@ function videoApiPlugin() {
       server.middlewares.use((req, res, next) => {
         const [rawPath, queryString] = req.url.split('?');
         const reqPath = decodeURI(rawPath);
+        const storage = getStorageModule();
 
         // Match /api/video/:id/embed
         const embedMatch = reqPath.match(/^\/api\/video\/([a-zA-Z0-9_-]+)\/embed$/i);
         if (embedMatch) {
           const episodeId = embedMatch[1];
-          const html = getEmbedHtml(episodeId);
+          const html = storage.getEmbedHtml(episodeId);
           res.setHeader('Content-Type', 'text/html; charset=utf-8');
           res.setHeader('Cache-Control', 'no-cache');
           res.statusCode = 200;
@@ -30,14 +41,14 @@ function videoApiPlugin() {
           const episodeId = videoMatch[1];
           const searchParams = new URLSearchParams(queryString || '');
           if (searchParams.get('format') === 'embed') {
-            const html = getEmbedHtml(episodeId);
+            const html = storage.getEmbedHtml(episodeId);
             res.setHeader('Content-Type', 'text/html; charset=utf-8');
             res.setHeader('Cache-Control', 'no-cache');
             res.statusCode = 200;
             return res.end(html);
           }
 
-          return streamVideoChunk(episodeId, req, res);
+          return storage.streamVideoChunk(episodeId, req, res);
         }
 
         next();

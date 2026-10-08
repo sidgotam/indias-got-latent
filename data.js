@@ -22,10 +22,10 @@ var VIDEO_STREAM_LINKS = {
   "s1-e06": "1rwaSaBCdyPE4zIwM5qbrE3YxiNQMU3vS", // Episode 6: Paste link here to auto-add!
     "s1-e07": "19nq5G7BNghO36Kti6a5ZBunJ97LkCmTd", // Episode 7: Paste link here to auto-add!
     "s1-e08": "1u6ad12iHKHmhR4jBSERc7fiLecGzNLP8", // Episode 8: Paste link here to auto-add!
-    "s1-e09": "", // Episode 9: Paste link here to auto-add!
-    "s1-e10": "", // Episode 10: Paste link here to auto-add!
-    "s1-e11": "", // Episode 11: Paste link here to auto-add!
-    "s1-e12": "", // Episode 12: Paste link here to auto-add!
+    "s1-e09": "1B3YObWkSj_--57SiDKYCMP5fSsyTI1N5", // Episode 9: Paste link here to auto-add!
+    "s1-e10": "1D8KVqdnt2Ng5KOYGJqkG1Lr4WcxbacZD", // Episode 10: Paste link here to auto-add!
+    "s1-e11": "1YqquQncKTxh4wrEpxHeLcORINiG-mvQO", // Episode 11: Paste link here to auto-add!
+    "s1-e12": "1U8_ie3wIMvKJsQONhthfqcb1Nq9BAZ36", // Episode 12: Paste link here to auto-add!
 
     // =========================================================================
     // 🔥 SEASON 2 EPISODES (Episodes 1 - 12)
@@ -46,11 +46,17 @@ var VIDEO_STREAM_LINKS = {
     // =========================================================================
     // 💎 VIP UNCUT SPECIALS (100% Free)
     // =========================================================================
-    "vip-e01": "", // VIP 1: The Dark Humor Auditions
-    "vip-e02": "", // VIP 2: Uncensored Green Room & Judges Roasts
+    "vip-sp01": "14og7Cs9DJ8GX8_EMk61yN2rr3eMjLKeN",
+    "vip-e01": "14og7Cs9DJ8GX8_EMk61yN2rr3eMjLKeN", // VIP 1: The Dark Humor Auditions
+    "vip-sp02": "1azUTB1gjc4u1oIH_JvpVGfEZWC6nHMoc",
+    "vip-e02": "1azUTB1gjc4u1oIH_JvpVGfEZWC6nHMoc", // VIP 2: Uncensored Green Room & Judges Roasts
+    "vip-sp03": "",
     "vip-e03": "", // VIP 3: Contestants Who Sued The Show
+    "vip-sp04": "",
     "vip-e04": "", // VIP 4: The Midnight Roasting Sessions
+    "vip-sp05": "",
     "vip-e05": "", // VIP 5: Never-Seen-Before Eliminations
+    "vip-sp06": "",
     "vip-e06": ""  // VIP 6: Samay's Unfiltered Standup Warmups
 };
 
@@ -135,7 +141,9 @@ var DEFAULT_EPISODES = [
         description: "Encore ABJ and Calm from Seedhe Maut join the judges table! Underground rappers and freestyle poets showcase their latent rhymes against harsh comic scores.",
         duration: "58 min",
         panel: ["Maheep Singh", "Samay Raina", "Balraj Singh Ghai", "Amit Tandon", "Neeti Palta"],
-        driveId: "",
+        driveId: "1gHvFlD5dBFc63NaMQQSudfm6PySmXpDs",
+        isStreamReady: true,
+        fileSize: "662.8 MB",
         thumbnail: "assets/thumbnails/s1_thumb.webp",
         tags: ["Seedhe Maut", "Tanmay Bhat", "Rap Cypher", "Raw"],
         isPremium: false,
@@ -149,7 +157,9 @@ var DEFAULT_EPISODES = [
         description: "Pure viral mayhem! Poonam Pandey and Vipul Goyal face a contestant who claims they can guess anyone's ATM pin code and a bizarre speed-eating latent.",
         duration: "54 min",
         panel: ["Kunal Kamra", "Samay Raina", "Balraj Singh Ghai", "Atul Khatri"],
-        driveId: "",
+        driveId: "1xq7nmLIcp4Wnn17F8s1diDFdIrK1WA43",
+        isStreamReady: true,
+        fileSize: "712.5 MB",
         thumbnail: "assets/thumbnails/s1_thumb.webp",
         tags: ["Poonam Pandey", "Vipul Goyal", "Viral", "18+ Unfiltered"],
         isPremium: false,
@@ -163,7 +173,9 @@ var DEFAULT_EPISODES = [
         description: "Raghu Ram brings the vintage brutal Roadies grilling energy to the latent stage. Intense contestant standoffs, dramatic buzzers, and unbelievable scoring tension.",
         duration: "56 min",
         panel: ["Vipul Goyal", "Samay Raina", "Balraj Singh Ghai", "Nishant Tanwar", "Sonali Thakker"],
-        driveId: "",
+        driveId: "1rwaSaBCdyPE4zIwM5qbrE3YxiNQMU3vS",
+        isStreamReady: true,
+        fileSize: "680.1 MB",
         thumbnail: "assets/thumbnails/s1_thumb.webp",
         tags: ["Raghu Ram", "Roadies Vibe", "Brutal Roasts", "Buzzers"],
         isPremium: false,
@@ -177,7 +189,9 @@ var DEFAULT_EPISODES = [
         description: "Maheep Singh's deadpan reactions steal the show as contestants present bizarre magic tricks, a whistle-symphony, and a 1-out-of-10 self-rating gamble.",
         duration: "47 min",
         panel: ["Ravi Gupta", "Samay Raina", "Rahgir", "Comic Saurabh"],
-        driveId: "",
+        driveId: "19nq5G7BNghO36Kti6a5ZBunJ97LkCmTd",
+        isStreamReady: true,
+        fileSize: "645.2 MB",
         thumbnail: "assets/thumbnails/s1_thumb.webp",
         tags: ["Maheep Singh", "Vivek Samtani", "Magic", "Deadpan"],
         isPremium: false,
@@ -191,7 +205,9 @@ var DEFAULT_EPISODES = [
         description: "Badshah enters the latent arena! A surprise flute-trap performer and an aspiring playback singer try to match the judges' average score for the cash prize.",
         duration: "55 min",
         panel: ["Poonam Pandey", "Samay Raina", "Vidit Gujrathi", "Sagar Shah", "Vivek Desai"],
-        driveId: "",
+        driveId: "1u6ad12iHKHmhR4jBSERc7fiLecGzNLP8",
+        isStreamReady: true,
+        fileSize: "690.3 MB",
         thumbnail: "assets/thumbnails/s1_thumb.webp",
         tags: ["Badshah", "Music Latent", "Cash Prize", "Bloopers"],
         isPremium: false,
@@ -205,7 +221,9 @@ var DEFAULT_EPISODES = [
         description: "Harsh Gujral and Gaurav Kapoor deliver non-stop relatable Delhi and Mumbai roasts. A contestant shows off impossible hand whistling and card tricks.",
         duration: "51 min",
         panel: ["Deepak Kalal", "Samay Raina", "Balraj Singh Ghai", "Manan Desai", "Agu Stanley"],
-        driveId: "",
+        driveId: "1B3YObWkSj_--57SiDKYCMP5fSsyTI1N5",
+        isStreamReady: true,
+        fileSize: "337.6 MB",
         thumbnail: "assets/thumbnails/s1_thumb.webp",
         tags: ["Harsh Gujral", "Gaurav Kapoor", "Delhi Banter", "Card Tricks"],
         isPremium: false,
@@ -219,7 +237,9 @@ var DEFAULT_EPISODES = [
         description: "Comedy royalty assemble! Zakir Khan and Biswa Kalyan Rath bring poetic critiques and existential laughs as a hyper-speed human calculator tests the panel.",
         duration: "1 hr 02 min",
         panel: ["Tanmay Bhat", "Samay Raina", "Balraj Singh Ghai", "Raghu Ram", "Sid Warrier"],
-        driveId: "",
+        driveId: "1D8KVqdnt2Ng5KOYGJqkG1Lr4WcxbacZD",
+        isStreamReady: true,
+        fileSize: "852.7 MB",
         thumbnail: "assets/thumbnails/s1_thumb.webp",
         tags: ["Zakir Khan", "Biswa Kalyan Rath", "Math Latent", "Masterpiece"],
         isPremium: false,
@@ -233,7 +253,9 @@ var DEFAULT_EPISODES = [
         description: "Bassi and Munawar join Samay for an electric, laugh-a-minute episode. An aspiring stand-up comic attempts to roast the entire panel to their face.",
         duration: "59 min",
         panel: ["Bharti Singh", "Samay Raina", "Haarsh Limbachiyaa", "Tony Kakkar", "Drew Hicks"],
-        driveId: "",
+        driveId: "1YqquQncKTxh4wrEpxHeLcORINiG-mvQO",
+        isStreamReady: true,
+        fileSize: "872.7 MB",
         thumbnail: "assets/thumbnails/s1_thumb.webp",
         tags: ["Anubhav Bassi", "Munawar Faruqui", "Roast Battle", "Uncut"],
         isPremium: false,
@@ -247,7 +269,9 @@ var DEFAULT_EPISODES = [
         description: "The monumental Season 1 finale! The highest rated contestants return for the ultimate jackpot round, surprise guest appearances, and Samay's grand roast.",
         duration: "1 hr 15 min",
         panel: ["Rakhi Sawant", "Samay Raina", "Aashish Solanki", "Maheep Singh"],
-        driveId: "",
+        driveId: "1U8_ie3wIMvKJsQONhthfqcb1Nq9BAZ36",
+        isStreamReady: true,
+        fileSize: "1.46 GB",
         thumbnail: "assets/thumbnails/s1_thumb.webp",
         tags: ["Season Finale", "Jackpot Winner", "Mega Panel", "All-Stars"],
         isPremium: false,
@@ -424,7 +448,9 @@ var DEFAULT_EPISODES = [
         title: "VIP Uncut: Samay & Tanmay 45-Min Green Room Roast",
         description: "Uncensored green room banter between Samay Raina and Tanmay Bhat before show taping. Full of hilarious unscripted jokes, chai talks, and set gossip.",
         duration: "45 min",
-        driveId: "",
+        driveId: "14og7Cs9DJ8GX8_EMk61yN2rr3eMjLKeN",
+        isStreamReady: true,
+        fileSize: "218.5 MB",
         thumbnail: "assets/thumbnails/vip_thumb.webp",
         tags: ["Green Room", "Uncut", "Tanmay & Samay", "100% Free"],
         isPremium: true,
@@ -437,7 +463,9 @@ var DEFAULT_EPISODES = [
         title: "VIP Vault: The Bizarre Rejected Auditions Hall of Fame",
         description: "The audition tapes that were too absurd, chaotic, or unhinged to make the main broadcast. Pure unfiltered comedy madness.",
         duration: "40 min",
-        driveId: "",
+        driveId: "1azUTB1gjc4u1oIH_JvpVGfEZWC6nHMoc",
+        isStreamReady: true,
+        fileSize: "450 MB",
         thumbnail: "assets/thumbnails/vip_thumb.webp",
         tags: ["Rejected Auditions", "Too Wild", "Free Access"],
         isPremium: true,

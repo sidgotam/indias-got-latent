@@ -10,6 +10,8 @@
 
 const https = require('https');
 const http = require('http');
+const fs = require('fs');
+const path = require('path');
 
 // Internal Storage Map: Episode ID -> Storage Backend Source
 const EPISODE_STORAGE_MAP = {
@@ -23,11 +25,11 @@ const EPISODE_STORAGE_MAP = {
   "s1-e07": { provider: "google-drive", fileId: "19nq5G7BNghO36Kti6a5ZBunJ97LkCmTd", filename: "Season1episode7.mkv" },
   "s1-e08": { provider: "google-drive", fileId: "1u6ad12iHKHmhR4jBSERc7fiLecGzNLP8", filename: "Season1episode8.mkv" },
 
-  // Season 1 (Upcoming Episodes - mapped when uploaded)
-  "s1-e09": null,
-  "s1-e10": null,
-  "s1-e11": null,
-  "s1-e12": null,
+  // Season 1 (Episodes 9 - 12)
+  "s1-e09": { provider: "google-drive", fileId: "1B3YObWkSj_--57SiDKYCMP5fSsyTI1N5", filename: "Season1episode9.mp4" },
+  "s1-e10": { provider: "google-drive", fileId: "1D8KVqdnt2Ng5KOYGJqkG1Lr4WcxbacZD", filename: "Season1episode10.mp4" },
+  "s1-e11": { provider: "google-drive", fileId: "1YqquQncKTxh4wrEpxHeLcORINiG-mvQO", filename: "Season1episode11.mp4" },
+  "s1-e12": { provider: "google-drive", fileId: "1U8_ie3wIMvKJsQONhthfqcb1Nq9BAZ36", filename: "Season1episode12.mp4" },
 
   // Season 2
   "s2-e01": null,
@@ -44,11 +46,17 @@ const EPISODE_STORAGE_MAP = {
   "s2-e12": null,
 
   // VIP Specials
-  "vip-e01": null,
-  "vip-e02": null,
+  "vip-sp01": { provider: "google-drive", fileId: "14og7Cs9DJ8GX8_EMk61yN2rr3eMjLKeN", filename: "VIP1.mp4" },
+  "vip-e01": { provider: "google-drive", fileId: "14og7Cs9DJ8GX8_EMk61yN2rr3eMjLKeN", filename: "VIP1.mp4" },
+  "vip-sp02": { provider: "google-drive", fileId: "1azUTB1gjc4u1oIH_JvpVGfEZWC6nHMoc", filename: "VIP2.mp4" },
+  "vip-e02": { provider: "google-drive", fileId: "1azUTB1gjc4u1oIH_JvpVGfEZWC6nHMoc", filename: "VIP2.mp4" },
+  "vip-sp03": null,
   "vip-e03": null,
+  "vip-sp04": null,
   "vip-e04": null,
+  "vip-sp05": null,
   "vip-e05": null,
+  "vip-sp06": null,
   "vip-e06": null
 };
 
@@ -58,9 +66,43 @@ const EPISODE_STORAGE_MAP = {
 function resolveEpisodeStorage(episodeId) {
   if (!episodeId) return null;
   const cleanId = String(episodeId).trim().toLowerCase();
-  const entry = EPISODE_STORAGE_MAP[cleanId];
-  if (!entry || !entry.fileId) return null;
-  return entry;
+  let entry = EPISODE_STORAGE_MAP[cleanId];
+  if (entry && entry.fileId) return entry;
+
+  // Check aliases (vip-sp vs vip-e)
+  const aliasId = cleanId.startsWith('vip-sp')
+    ? cleanId.replace('vip-sp', 'vip-e')
+    : cleanId.startsWith('vip-e')
+    ? cleanId.replace('vip-e', 'vip-sp')
+    : null;
+
+  if (aliasId && EPISODE_STORAGE_MAP[aliasId]?.fileId) {
+    return EPISODE_STORAGE_MAP[aliasId];
+  }
+
+  // Fallback: Check data.js dynamically if link was added there
+  try {
+    const dataPath = path.join(__dirname, '..', 'data.js');
+    if (fs.existsSync(dataPath)) {
+      const content = fs.readFileSync(dataPath, 'utf8');
+      const targetIds = aliasId ? [cleanId, aliasId] : [cleanId];
+      for (const id of targetIds) {
+        const pattern = new RegExp(`"${id}"\\s*:\\s*"([a-zA-Z0-9_-]+)"`, 'i');
+        const match = content.match(pattern);
+        if (match && match[1] && !match[1].includes('sample')) {
+          return {
+            provider: 'google-drive',
+            fileId: match[1],
+            filename: `${id}.mp4`
+          };
+        }
+      }
+    }
+  } catch (e) {
+    // ignore
+  }
+
+  return null;
 }
 
 /**
@@ -131,6 +173,11 @@ function streamVideoChunk(episodeId, req, res) {
 }
 
 function pipeStreamResponse(upstreamRes, req, res, isMatroska) {
+  // If upstream returns HTML (e.g. Google Drive Quota exceeded), return 503 so player switches to embed
+  if (upstreamRes.headers['content-type'] && upstreamRes.headers['content-type'].includes('text/html')) {
+    res.writeHead(503, { 'Content-Type': 'application/json' });
+    return res.end(JSON.stringify({ error: 'Storage stream quota exceeded. Switching to fallback embed.' }));
+  }
   const statusCode = upstreamRes.statusCode === 206 ? 206 : 200;
   const contentType = isMatroska ? 'video/webm' : 'video/mp4';
   const headers = {

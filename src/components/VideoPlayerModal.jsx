@@ -507,7 +507,7 @@ export default function VideoPlayerModal({
                 </div>
                 <h3 id="unloadedTitle">{episode.title}</h3>
                 <p className="unloaded-desc">
-                  This episode is currently being processed for streaming. Season 1 Episodes 1 through 8 are
+                  This episode is currently being processed for streaming. Season 1 Episodes 1 through 12 are
                   ready to stream right now in full unedited 1080p HD!
                 </p>
 
