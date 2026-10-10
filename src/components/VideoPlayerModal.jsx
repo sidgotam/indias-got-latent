@@ -5,6 +5,12 @@ import {
   getVideoStreamUrl
 } from '../data/seriesData.js';
 
+// Watch-progress persistence: save at most once every N seconds to avoid
+// hammering localStorage on every timeupdate event.
+const PROGRESS_SAVE_INTERVAL = 3000;
+// Restore playback position only if the user watched at least this long.
+const MIN_RESUME_SECONDS = 3;
+
 function formatTime(seconds) {
   if (isNaN(seconds) || seconds < 0) return '00:00';
   const totalSecs = Math.floor(seconds);
