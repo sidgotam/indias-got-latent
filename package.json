@@ -19,7 +19,8 @@
   "license": "ISC",
   "dependencies": {
     "react": "^19.3.0",
-    "react-dom": "^19.3.0"
+    "react-dom": "^19.3.0",
+    "wrangler": "^4.151.1"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^6.1.2",
